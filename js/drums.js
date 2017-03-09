@@ -165,35 +165,32 @@ DrumApp.prototype.createScene = function() {
     }
 
     //Create floor
-    var floorGeom = new THREE.CylinderGeometry(400, 400, 10, 24, 1);
+    var floorGeom = new THREE.CylinderBufferGeometry(400, 400, 10, 24, 1);
     var floorMat = new THREE.MeshLambertMaterial( {color: 0x0000ff} );
     var floor = new THREE.Mesh(floorGeom, floorMat);
     floor.position.y = -90;
 
-    this.scene.add(floor);
+    this.scenes[this.currentScene].add(floor);
 
     //Load in model
-    this.modelLoader = new THREE.OBJMTLLoader();
     var _this = this;
-
-    this.modelLoader.load( 'models/drumset.obj', 'models/drumset.mtl', function ( object ) {
-
-        _this.scene.add( object );
-        _this.loadedModel = object;
-
-    } );
+    this.loader = new THREE.JSONLoader();
+    this.loader.load("./models/luis_drumset.json", function(geometry, materials) {
+        _this.drumMesh = new THREE.Mesh(geometry, new THREE.MultiMaterial(materials));
+        _this.scenes[_this.currentScene].add(_this.drumMesh);
+    });
 
     //Hit visualisations
     var hitGeom, hitMesh, hitHeight = 50;
     var hitMat = new THREE.MeshLambertMaterial( {color: 0xff0000} );
     this.hitMeshes = [];
     for(i=0, len=drumPos.length; i<len; ++i) {
-        hitGeom = new THREE.CylinderGeometry(1, 1, hitHeight, 8, 1);
+        hitGeom = new THREE.CylinderBufferGeometry(1, 1, hitHeight, 8, 1);
         hitMesh = new THREE.Mesh(hitGeom, hitMat);
         hitMesh.position.set(drumPos[i].x, drumPos[i].y+(hitHeight/2), drumPos[i].z);
         hitMesh.name = drumNames[i];
         hitMesh.visible = false;
-        this.scene.add(hitMesh);
+        this.scenes[this.currentScene].add(hitMesh);
         this.hitMeshes.push(hitMesh);
         this.hitMeshes.timerStart = 0;
     }
@@ -201,10 +198,10 @@ DrumApp.prototype.createScene = function() {
     this.hitMeshes[KICK].rotation.x = Math.PI/2;
     //DEBUG
     //Positioning helper
-    var boxGeom = new THREE.BoxGeometry(10, 10, 10);
+    var boxGeom = new THREE.BoxBufferGeometry(10, 10, 10);
     var boxMat = new THREE.MeshBasicMaterial( {color: 0xffffff});
     var box = new THREE.Mesh(boxGeom, boxMat);
-    this.scene.add(box);
+    this.scenes[this.currentScene].add(box);
     box.name = "Box";
     box.visible = false;
 };
@@ -373,9 +370,6 @@ DrumApp.prototype.keydown = function(event) {
 };
 
 $(document).ready(function() {
-    //Initialise app
-    skel.init();
-
     //Drums
     var drumNames = ["hihat", "snare", "uppertom", "midtom",
         "floortom", "kick", "crash", "ride"];
