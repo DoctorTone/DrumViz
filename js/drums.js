@@ -233,7 +233,9 @@ DrumApp.prototype.loadScore = function() {
 
 DrumApp.prototype.playScore = function() {
     //Play current score
-    soundManager.setDuration($('#bpm').val());
+    //DEBUG
+    //soundManager.setDuration($('#bpm').val());
+    soundManager.setDuration(60);
     this.loadScore();
     this.elapsedTime = 0;
     this.playNow = true;
@@ -388,6 +390,14 @@ $(document).ready(function() {
 
     $('#play').on('click', function() {
         app.playScore();
+    });
+
+    $('.dial').knob({
+        "min": 5,
+        "max": 220,
+        "inputColor": "#000000",
+        "fgColor": "#632523",
+        "width": 200
     });
 
     app.run();

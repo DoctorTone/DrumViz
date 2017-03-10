@@ -1,39 +1,49 @@
-/* Styles for webgl visualisations */
+/* Framework styles */
 
-body {
+#WebGL-output {
     /* set margin to 0 and overflow to hidden, to go fullscreen */
     margin: 0;
     overflow: hidden;
 }
-.hidden {
+
+.noDisplay {
     display: none;
 }
 .centred {
     text-align: center;
 }
-#controls {
+.infoPanel {
     position: absolute;
-    top: 25%;
-    left: 85%;
+}
+.scroll {
+    overflow: auto;
+}
+#notSupported {
+    background: #a9434a;
+    border-radius: 15px;
+    color: black;
     padding: 2%;
-    text-align: center;
-    border-radius: 10px;
-    border: 2px solid black;
 }
-#controls div {
-    margin-bottom: 10%;
-}
-#controls img {
-    width: 50%;
+#notSupported {
+    top: 25%;
+    left: 33.333%;
+    width: 33.333%;
 }
 #score {
-    position: absolute;
-    top: 2%;
-    left: 0%;
+    top: 1%;
+    left: 20%;
+    width: 60%;
+    border: 6px solid #949494;
+    border-radius: 5px;
+}
+#score img {
     width: 100%;
-    text-align: center;
+}
+#controls {
+    top: 1%;
+    right: 1%;
+}
+#playback img {
+    width: 45%;
 }
 
-#score img {
-    width: 50%;
-}
