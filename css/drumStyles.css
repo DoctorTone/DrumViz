@@ -42,8 +42,9 @@
 #controls {
     top: 1%;
     right: 1%;
+    width: 12.5%;
 }
 #playback img {
-    width: 45%;
+    width: 100%;
 }
 

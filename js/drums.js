@@ -3,66 +3,67 @@
  */
 
 //Init this app from base
-var HIHAT=0, SNARE=1, UPPERTOM=2, MIDTOM=3;
-var FLOORTOM=4, KICK=5, CRASH=6, RIDE=7;
+let HIHAT=0, SNARE=1, UPPERTOM=2, MIDTOM=3;
+let FLOORTOM=4, KICK=5, CRASH=6, RIDE=7;
 
-var soundManager = null;
+let soundManager = null;
 
 //DEBUG
-
-var score = [
-    [
-        { drum: HIHAT, notes: [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5] },
-        { drum: SNARE, notes: [1, 3] },
-        { drum: KICK, notes: [0, 0.5, 0.75, 1.5, 2] }
-    ],
-
-    [
-        { drum: HIHAT, notes: [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5] },
-        { drum: SNARE, notes: [1, 3] },
-        { drum: KICK, notes: [0, 0.5, 0.75, 1.5, 2] }
-    ],
-
-    [
-        { drum: HIHAT, notes: [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5] },
-        { drum: SNARE, notes: [1, 3] },
-        { drum: KICK, notes: [0, 0.5, 0.75, 1.5, 2] }
-    ],
-
-    [
-        { drum: HIHAT, notes: [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5] },
-        { drum: SNARE, notes: [1, 3] },
-        { drum: KICK, notes: [0, 0.5, 0.75, 1.5, 2] }
-    ]
-];
-
 /*
 var score = [
     [
         { drum: HIHAT, notes: [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5] },
         { drum: SNARE, notes: [1, 3] },
-        { drum: KICK, notes: [0, 0.25, 1.75, 2, 2.25] }
+        { drum: KICK, notes: [0, 0.5, 0.75, 1.5, 2] }
     ],
 
     [
         { drum: HIHAT, notes: [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5] },
         { drum: SNARE, notes: [1, 3] },
-        { drum: KICK, notes: [0, 0.25, 1.75, 2, 2.25] }
-    ],
-
-    [
-        { drum: HIHAT, notes: [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5] },
-        { drum: SNARE, notes: [1, 3, 3.75] },
-        { drum: KICK, notes: [0, 0.25, 1.75, 2, 2.25] }
+        { drum: KICK, notes: [0, 0.5, 0.75, 1.5, 2] }
     ],
 
     [
         { drum: HIHAT, notes: [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5] },
         { drum: SNARE, notes: [1, 3] },
-        { drum: KICK, notes: [0, 0.25, 1.75, 2, 2.25] }
+        { drum: KICK, notes: [0, 0.5, 0.75, 1.5, 2] }
+    ],
+
+    [
+        { drum: HIHAT, notes: [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5] },
+        { drum: SNARE, notes: [1, 3] },
+        { drum: KICK, notes: [0, 0.5, 0.75, 1.5, 2] }
     ]
 ];
 */
+
+
+let score = [
+    [
+        { drum: HIHAT, notes: [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5] },
+        { drum: SNARE, notes: [1, 3] },
+        { drum: KICK, notes: [0, 2] }
+    ],
+
+    [
+        { drum: HIHAT, notes: [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5] },
+        { drum: SNARE, notes: [1, 3] },
+        { drum: KICK, notes: [0, 2] }
+    ],
+
+    [
+        { drum: HIHAT, notes: [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5] },
+        { drum: SNARE, notes: [1, 3] },
+        { drum: KICK, notes: [0, 2] }
+    ],
+
+    [
+        { drum: HIHAT, notes: [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5] },
+        { drum: SNARE, notes: [1, 3] },
+        { drum: KICK, notes: [0, 2] }
+    ]
+];
+
 /*
 var score = [
     [
@@ -126,7 +127,7 @@ DrumApp.prototype.init = function(container) {
     BaseApp.prototype.init.call(this, container);
     this.scoreLoaded = false;
     this.drumIndex = new Array(8);
-    for(var i=0; i<this.drumIndex.length; ++i) {
+    for(let i=0; i<this.drumIndex.length; ++i) {
         this.drumIndex[i] = 0;
     }
     this.currentBar = 0;
@@ -138,6 +139,7 @@ DrumApp.prototype.init = function(container) {
     this.currentScore = [];
     this.timeNow = 0;
     this.playNow = false;
+    this.playing = false;
 };
 
 DrumApp.prototype.createScene = function() {
@@ -198,9 +200,9 @@ DrumApp.prototype.createScene = function() {
     this.hitMeshes[KICK].rotation.x = Math.PI/2;
     //DEBUG
     //Positioning helper
-    var boxGeom = new THREE.BoxBufferGeometry(10, 10, 10);
-    var boxMat = new THREE.MeshBasicMaterial( {color: 0xffffff});
-    var box = new THREE.Mesh(boxGeom, boxMat);
+    let boxGeom = new THREE.BoxBufferGeometry(10, 10, 10);
+    let boxMat = new THREE.MeshBasicMaterial( {color: 0xffffff});
+    let box = new THREE.Mesh(boxGeom, boxMat);
     this.scenes[this.currentScene].add(box);
     box.name = "Box";
     box.visible = false;
@@ -209,19 +211,19 @@ DrumApp.prototype.createScene = function() {
 DrumApp.prototype.loadScore = function() {
     //Convert json object to drum sounds and timing
     this.currentScore.length = 0;
-    var currentBar, currentBeat, drum, nextTime=0;
+    let currentBar, currentBeat, drum, nextTime=0;
     this.duration = soundManager.getDuration();
     this.barTime = this.duration * 4;
-    var bar = score[0], numBars;
+    let bar = score[0], numBars;
     this.totalBars = score.length;
-    for(var i=0; i<bar.length; ++i) {
+    for(let i=0; i<bar.length; ++i) {
         this.notesThisBar += bar[i].notes.length;
     }
     for(bar= 0, numBars=score.length; bar<numBars; ++bar) {
         currentBar = score[bar];
         for(currentBeat=0; currentBeat<currentBar.length; ++currentBeat) {
             drum = currentBar[currentBeat].drum;
-            for(var note= 0, barLength=currentBar[currentBeat].notes.length; note<barLength; ++note) {
+            for(let note= 0, barLength=currentBar[currentBeat].notes.length; note<barLength; ++note) {
                 nextTime = currentBar[currentBeat].notes[note] * this.duration;
                 this.currentScore.push(drum);
                 this.currentScore.push(nextTime + (this.barTime * bar));
@@ -231,22 +233,29 @@ DrumApp.prototype.loadScore = function() {
     }
 };
 
+DrumApp.prototype.setDuration = function(duration) {
+    soundManager.setDuration(duration);
+};
+
 DrumApp.prototype.playScore = function() {
+    //Set play button to pause
+    this.playing = !this.playing;
+    let elem = $('#play');
+    elem.attr("src", this.playing ? "images/pause-button.png" : "images/play-button.png");
+
     //Play current score
-    //DEBUG
-    //soundManager.setDuration($('#bpm').val());
-    soundManager.setDuration(60);
     this.loadScore();
     this.elapsedTime = 0;
     this.playNow = true;
-    for(var i= 0, len=this.currentScore.length; i<len; i+=2) {
+    let i, len;
+    for(i=0, len=this.currentScore.length; i<len; i+=2) {
         soundManager.playSound(this.currentScore[i], this.currentScore[i+1]);
     }
 };
 
 DrumApp.prototype.resetScore = function() {
     //Reset everything
-    var bar, i, len;
+    let bar, i, len;
     this.currentBar = 0;
     this.timeNow = 0;
     this.playNow = false;
@@ -373,13 +382,15 @@ DrumApp.prototype.keydown = function(event) {
 
 $(document).ready(function() {
     //Drums
-    var drumNames = ["hihat", "snare", "uppertom", "midtom",
+    const defaultBPM = 60;
+    let drumNames = ["hihat", "snare", "uppertom", "midtom",
         "floortom", "kick", "crash", "ride"];
-    var container = document.getElementById("WebGL-output");
+    let container = document.getElementById("WebGL-output");
     soundManager = new drumManager();
     soundManager.init(drumNames);
+    soundManager.setDuration(defaultBPM);
 
-    var app = new DrumApp();
+    let app = new DrumApp();
     app.init(container);
     //app.createGUI();
     app.createScene();
@@ -397,7 +408,10 @@ $(document).ready(function() {
         "max": 220,
         "inputColor": "#000000",
         "fgColor": "#632523",
-        "width": 200
+        "width": 200,
+        "change": function(value) {
+            app.setDuration(value);
+        }
     });
 
     app.run();
