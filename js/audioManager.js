@@ -4,7 +4,7 @@
 
 //Manage all web audio
 
-var drumManager = function() {
+let drumManager = function() {
     this.context = null;
     this.url = "sounds/";
     this.extension = ".wav";
@@ -31,17 +31,17 @@ drumManager.prototype = {
             alert("Web Audio API not supported");
         }
         //Load drum sounds
-        var numSounds = sounds.length;
+        let i, numSounds = sounds.length;
         this.soundBuffers = new Array(numSounds);
-        for(var i=0; i<numSounds; ++i) {
+        for(i=0; i<numSounds; ++i) {
             this.loadSound(sounds[i], i);
         }
     },
 
     loadSound: function(sound, id) {
         //Load all sounds asynchronously
-        var _this = this;
-        var request;
+        let _this = this;
+        let request;
 
         request = new XMLHttpRequest();
         request.open("GET", this.url + sound + this.extension, true);
@@ -71,9 +71,13 @@ drumManager.prototype = {
     },
 
     playSound: function(sound, time) {
-        var source = this.context.createBufferSource();
-        source.buffer = this.soundBuffers[sound];
-        source.connect(this.context.destination);
-        source.start(this.context.currentTime+time);
+        this.source = this.context.createBufferSource();
+        this.source.buffer = this.soundBuffers[sound];
+        this.source.connect(this.context.destination);
+        this.source.start(this.context.currentTime+time);
+    },
+
+    pause: function() {
+        this.context.suspend();
     }
 };

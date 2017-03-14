@@ -243,14 +243,18 @@ DrumApp.prototype.playScore = function() {
     let elem = $('#play');
     elem.attr("src", this.playing ? "images/pause-button.png" : "images/play-button.png");
 
-    //Play current score
-    this.loadScore();
-    this.elapsedTime = 0;
-    this.playNow = true;
-    let i, len;
-    for(i=0, len=this.currentScore.length; i<len; i+=2) {
-        soundManager.playSound(this.currentScore[i], this.currentScore[i+1]);
+    //Play/pause current score
+    if(this.playing) {
+        this.elapsedTime = 0;
+        this.playNow = true;
+        let i, len;
+        for(i=0, len=this.currentScore.length; i<len; i+=2) {
+            soundManager.playSound(this.currentScore[i], this.currentScore[i+1]);
+        }
+    } else {
+        soundManager.pause();
     }
+
 };
 
 DrumApp.prototype.resetScore = function() {
@@ -271,14 +275,14 @@ DrumApp.prototype.resetScore = function() {
 
 DrumApp.prototype.createGUI = function() {
     //Create GUI - use dat.GUI for now
-    var _this = this;
+    let _this = this;
     this.guiControls = new function() {
         this.X = 0;
         this.Y = 0;
         this.Z = 0;
     };
 
-    var gui = new dat.GUI();
+    let gui = new dat.GUI();
     gui.add(this.guiControls, "X", -500, 500).onChange(function(value) {
         _this.changeBoxPos(value, -1);
     });
@@ -321,15 +325,14 @@ DrumApp.prototype.changeBoxPos = function(pos, axis) {
 DrumApp.prototype.update = function() {
     BaseApp.prototype.update.call(this);
     this.elapsedTime += this.clock.getDelta();
-    var i, len;
+    let i, len;
     if(soundManager.soundsLoaded() && !this.scoreLoaded) {
         this.scoreLoaded = true;
-        //this.loadScore();
     }
 
 
     if(this.playNow) {
-        var bar = score[this.currentBar], index, drum;
+        let bar = score[this.currentBar], index, drum;
         for(i= 0, len=bar.length; i<len; ++i) {
             drum = bar[i].drum;
             index = this.drumIndex[drum];
@@ -394,6 +397,7 @@ $(document).ready(function() {
     app.init(container);
     //app.createGUI();
     app.createScene();
+    app.loadScore();
 
     $(document).keydown(function(event) {
         app.keydown(event);
