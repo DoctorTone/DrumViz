@@ -40,27 +40,18 @@ var score = [
 
 let score = [
     [
-        { drum: HIHAT, notes: [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5] },
-        { drum: SNARE, notes: [1, 3] },
-        { drum: KICK, notes: [0, 2] }
-    ],
-
-    [
-        { drum: HIHAT, notes: [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5] },
-        { drum: SNARE, notes: [1, 3] },
-        { drum: KICK, notes: [0, 2] }
-    ],
-
-    [
-        { drum: HIHAT, notes: [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5] },
-        { drum: SNARE, notes: [1, 3] },
-        { drum: KICK, notes: [0, 2] }
-    ],
-
-    [
-        { drum: HIHAT, notes: [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5] },
-        { drum: SNARE, notes: [1, 3] },
-        { drum: KICK, notes: [0, 2] }
+        { time: 0, drum: HIHAT },
+        { time: 0, drum: KICK },
+        { time: 0.5, drum: HIHAT },
+        { time: 1, drum: HIHAT },
+        { time: 1, drum: SNARE },
+        { time: 1.5, drum: HIHAT },
+        { time: 2, drum: HIHAT },
+        { time: 2, drum: KICK },
+        { time: 2.5, drum: HIHAT },
+        { time: 3, drum: HIHAT },
+        { time: 3, drum: SNARE },
+        { time: 3.5, drum: HIHAT }
     ]
 ];
 
@@ -141,6 +132,7 @@ DrumApp.prototype.init = function(container) {
     this.timeNow = 0;
     this.playNow = false;
     this.playing = false;
+    this.playingTime = 0;
 };
 
 DrumApp.prototype.createScene = function() {
@@ -168,15 +160,15 @@ DrumApp.prototype.createScene = function() {
     }
 
     //Create floor
-    var floorGeom = new THREE.CylinderBufferGeometry(400, 400, 10, 24, 1);
-    var floorMat = new THREE.MeshLambertMaterial( {color: 0x0000ff} );
-    var floor = new THREE.Mesh(floorGeom, floorMat);
+    let floorGeom = new THREE.CylinderBufferGeometry(400, 400, 10, 24, 1);
+    let floorMat = new THREE.MeshLambertMaterial( {color: 0x0000ff} );
+    let floor = new THREE.Mesh(floorGeom, floorMat);
     floor.position.y = -90;
 
     this.scenes[this.currentScene].add(floor);
 
     //Load in model
-    var _this = this;
+    let _this = this;
     this.loader = new THREE.JSONLoader();
     this.loader.load("./models/luis_drumset.json", function(geometry, materials) {
         _this.drumMesh = new THREE.Mesh(geometry, new THREE.MultiMaterial(materials));
@@ -184,8 +176,8 @@ DrumApp.prototype.createScene = function() {
     });
 
     //Hit visualisations
-    var hitGeom, hitMesh, hitHeight = 50;
-    var hitMat = new THREE.MeshLambertMaterial( {color: 0xff0000} );
+    let hitGeom, hitMesh, hitHeight = 50;
+    let hitMat = new THREE.MeshLambertMaterial( {color: 0xff0000} );
     this.hitMeshes = [];
     for(i=0, len=drumPos.length; i<len; ++i) {
         hitGeom = new THREE.CylinderBufferGeometry(1, 1, hitHeight, 8, 1);
@@ -209,47 +201,6 @@ DrumApp.prototype.createScene = function() {
     box.visible = false;
 };
 
-/*
-DrumApp.prototype.loadScore = function() {
-    //Convert json object to drum sounds and timing
-    this.currentScore.length = 0;
-    let currentBar, currentBeat, drum, nextTime=0;
-    this.duration = soundManager.getDuration();
-    this.barTime = this.duration * 4;
-    let bar = score[0], numBars;
-    this.totalBars = score.length;
-    for(let i=0; i<bar.length; ++i) {
-        this.notesThisBar += bar[i].notes.length;
-    }
-    for(bar= 0, numBars=score.length; bar<numBars; ++bar) {
-        currentBar = score[bar];
-        for(currentBeat=0; currentBeat<currentBar.length; ++currentBeat) {
-            drum = currentBar[currentBeat].drum;
-            for(let note=0, barLength=currentBar[currentBeat].notes.length; note<barLength; ++note) {
-                nextTime = currentBar[currentBeat].notes[note] * this.duration;
-                this.currentScore.push(drum);
-                this.currentScore.push(nextTime + (this.barTime * bar));
-            }
-            nextTime=0;
-        }
-    }
-};
-*/
-
-DrumApp.prototype.loadScore = function() {
-    //Convert json object to drum sounds and timing
-    let currentBar = score[0];
-    let times = [];
-    let i, currentDrum, barLength = currentBar.length, currentNotes, numNotes;
-    for(currentDrum=0; currentDrum<barLength; ++currentDrum) {
-        currentNotes = currentBar[currentDrum].notes;
-        numNotes = currentNotes.length;
-        for(i=0; i<numNotes; ++i) {
-            times.push(currentNotes[i]);
-        }
-    }
-};
-
 DrumApp.prototype.setDuration = function(duration) {
     soundManager.setDuration(duration);
 };
@@ -259,19 +210,6 @@ DrumApp.prototype.playScore = function() {
     this.playing = !this.playing;
     let elem = $('#play');
     elem.attr("src", this.playing ? "images/pause-button.png" : "images/play-button.png");
-
-    //Play/pause current score
-    if(this.playing) {
-        this.elapsedTime = 0;
-        this.playNow = true;
-        let i, len;
-        for(i=0, len=this.currentScore.length; i<len; i+=2) {
-            soundManager.playSound(this.currentScore[i], this.currentScore[i+1]);
-        }
-    } else {
-        soundManager.pause();
-    }
-
 };
 
 DrumApp.prototype.resetScore = function() {
@@ -288,6 +226,29 @@ DrumApp.prototype.resetScore = function() {
         this.hitMeshes[i].visible = false;
         this.hitMeshes[i].timerStart = 0;
     }
+};
+
+DrumApp.prototype.getNextTime = function() {
+    //Get next note at current time index
+    let bar = score[this.currentBar];
+    return bar[this.currentNote].time;
+};
+
+DrumApp.prototype.getNextNotes = function() {
+    let notes = [];
+    let bar = score[this.currentBar], i;
+    let currentTime = bar[this.currentNote].time;
+    for(i=0; i<bar.length; ++i) {
+        if(bar[i].time === currentTime) {
+            notes.push(bar[i].drum);
+        }
+    }
+
+    return notes;
+};
+
+DrumApp.prototype.updateNoteIndex = function(offset) {
+    this.currentNote += offset;
 };
 
 DrumApp.prototype.createGUI = function() {
@@ -313,7 +274,7 @@ DrumApp.prototype.createGUI = function() {
 
 DrumApp.prototype.changeBoxPos = function(pos, axis) {
     //Move box around scene
-    var box = this.scene.getObjectByName("Box", true);
+    let box = this.scene.getObjectByName("Box", true);
     if(!box) {
         console.log("No box in scene");
     }
@@ -341,50 +302,21 @@ DrumApp.prototype.changeBoxPos = function(pos, axis) {
 
 DrumApp.prototype.update = function() {
     BaseApp.prototype.update.call(this);
-    this.elapsedTime += this.clock.getDelta();
-    let i, len;
-    if(soundManager.soundsLoaded() && !this.scoreLoaded) {
-        this.scoreLoaded = true;
-    }
+    let delta = this.clock.getDelta();
+    this.elapsedTime += delta;
 
-
-    if(this.playNow) {
-        let bar = score[this.currentBar], index, drum;
-        for(i= 0, len=bar.length; i<len; ++i) {
-            drum = bar[i].drum;
-            index = this.drumIndex[drum];
-            if(index < 0) continue;
-            if(this.elapsedTime >= ((bar[i].notes[index] * this.duration) + (this.barTime * this.currentBar))) {
-                this.hitMeshes[drum].visible = true;
-                //DEBUG
-                console.log("On");
-
-                this.hitMeshes[drum].timerStart = this.elapsedTime;
-                if(++this.drumIndex[drum] >= bar[i].notes.length) this.drumIndex[drum] = -1;
-                if(++this.currentNote >= this.notesThisBar) {
-                    for(i=0; i<this.drumIndex.length; ++i) {
-                        this.drumIndex[i] = 0;
-                    }
-                    this.currentNote = this.notesThisBar = 0;
-                    if(++this.currentBar >= this.totalBars) {
-                        this.resetScore();
-                        return;
-                    }
-                    bar = score[this.currentBar];
-                    for(i=0; i<bar.length; ++i) {
-                        this.notesThisBar += bar[i].notes.length;
-                    }
-                }
+    if(this.playing && soundManager.soundsLoaded()) {
+        this.playingTime += delta;
+        let nextTime = this.getNextTime(), i;
+        if(this.playingTime >= nextTime) {
+            //Get all notes playing at this time
+            let notes = this.getNextNotes();
+            for(i=0; i<notes.length; ++i) {
+                soundManager.playSound(notes[i]);
             }
+            this.updateNoteIndex(notes.length);
         }
     }
-
-    for(i= 0, len=this.hitMeshes.length; i<len; ++i) {
-        if((this.elapsedTime - this.hitMeshes[i].timerStart) >= this.hitDelay) {
-            this.hitMeshes[i].visible = false;
-        }
-    }
-
 };
 
 DrumApp.prototype.keydown = function(event) {
@@ -414,7 +346,6 @@ $(document).ready(function() {
     app.init(container);
     //app.createGUI();
     app.createScene();
-    app.loadScore();
 
     $(document).keydown(function(event) {
         app.keydown(event);
