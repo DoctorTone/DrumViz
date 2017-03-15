@@ -12,6 +12,7 @@ let drumManager = function() {
     this.allSoundsLoaded = false;
     this.bpm = 100;
     this.beatDuration = 60/this.bpm;
+    this.sources = [];
 };
 
 function onError() {
@@ -71,13 +72,18 @@ drumManager.prototype = {
     },
 
     playSound: function(sound, time) {
-        this.source = this.context.createBufferSource();
-        this.source.buffer = this.soundBuffers[sound];
-        this.source.connect(this.context.destination);
-        this.source.start(this.context.currentTime+time);
+        let source = this.context.createBufferSource();
+        this.sources.push(source);
+        source.buffer = this.soundBuffers[sound];
+        source.connect(this.context.destination);
+        source.start(this.context.currentTime+time);
     },
 
     pause: function() {
-        this.context.suspend();
+        this.source.stop(this.context.currentTime);
+    },
+
+    resume: function() {
+        this.context.resume();
     }
 };

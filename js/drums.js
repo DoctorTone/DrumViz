@@ -126,9 +126,10 @@ DrumApp.prototype = new BaseApp();
 DrumApp.prototype.init = function(container) {
     BaseApp.prototype.init.call(this, container);
     this.scoreLoaded = false;
-    this.drumIndex = new Array(8);
-    for(let i=0; i<this.drumIndex.length; ++i) {
-        this.drumIndex[i] = 0;
+    const NUM_DRUMS = 8;
+    this.drumIndex = [];
+    for(let i=0; i<NUM_DRUMS; ++i) {
+        this.drumIndex.push(0);
     }
     this.currentBar = 0;
     this.notesThisBar = 0;
@@ -147,9 +148,9 @@ DrumApp.prototype.createScene = function() {
     BaseApp.prototype.createScene.call(this);
 
     //Drums
-    var drumNames = ["hihat", "snare", "uppertom", "midtom",
+    let drumNames = ["hihat", "snare", "uppertom", "midtom",
             "floortom", "kick", "crash", "ride"];
-    var pos = [
+    let pos = [
         -207, 237, 64, //Hihat
         -100, 190, 96, //Snare
         -88, 259, -20, //Upper tom
@@ -159,9 +160,9 @@ DrumApp.prototype.createScene = function() {
         -197, 291, -56,//Crash
         161, 313, -77
     ];
-    var drumPos = [];
-    var visPos;
-    for(var i= 0, len = pos.length; i<len; i+=3) {
+    let drumPos = [];
+    let visPos, i, len;
+    for(i=0, len = pos.length; i<len; i+=3) {
         visPos = new THREE.Vector3(pos[i], pos[i+1], pos[i+2]);
         drumPos.push(visPos);
     }
@@ -208,6 +209,7 @@ DrumApp.prototype.createScene = function() {
     box.visible = false;
 };
 
+/*
 DrumApp.prototype.loadScore = function() {
     //Convert json object to drum sounds and timing
     this.currentScore.length = 0;
@@ -223,12 +225,27 @@ DrumApp.prototype.loadScore = function() {
         currentBar = score[bar];
         for(currentBeat=0; currentBeat<currentBar.length; ++currentBeat) {
             drum = currentBar[currentBeat].drum;
-            for(let note= 0, barLength=currentBar[currentBeat].notes.length; note<barLength; ++note) {
+            for(let note=0, barLength=currentBar[currentBeat].notes.length; note<barLength; ++note) {
                 nextTime = currentBar[currentBeat].notes[note] * this.duration;
                 this.currentScore.push(drum);
                 this.currentScore.push(nextTime + (this.barTime * bar));
             }
             nextTime=0;
+        }
+    }
+};
+*/
+
+DrumApp.prototype.loadScore = function() {
+    //Convert json object to drum sounds and timing
+    let currentBar = score[0];
+    let times = [];
+    let i, currentDrum, barLength = currentBar.length, currentNotes, numNotes;
+    for(currentDrum=0; currentDrum<barLength; ++currentDrum) {
+        currentNotes = currentBar[currentDrum].notes;
+        numNotes = currentNotes.length;
+        for(i=0; i<numNotes; ++i) {
+            times.push(currentNotes[i]);
         }
     }
 };
