@@ -52,6 +52,20 @@ let score = [
         { time: 3, drum: HIHAT },
         { time: 3, drum: SNARE },
         { time: 3.5, drum: HIHAT }
+    ],
+    [
+        { time: 0, drum: HIHAT },
+        { time: 0, drum: KICK },
+        { time: 0.5, drum: HIHAT },
+        { time: 1, drum: HIHAT },
+        { time: 1, drum: SNARE },
+        { time: 1.5, drum: HIHAT },
+        { time: 2, drum: HIHAT },
+        { time: 2, drum: KICK },
+        { time: 2.5, drum: HIHAT },
+        { time: 3, drum: HIHAT },
+        { time: 3, drum: SNARE },
+        { time: 3.5, drum: HIHAT }
     ]
 ];
 
@@ -123,7 +137,8 @@ DrumApp.prototype.init = function(container) {
         this.drumIndex.push(0);
     }
     this.currentBar = 0;
-    this.notesThisBar = 0;
+    this.notesThisBar = score[this.currentBar].length;
+    this.numBars = score.length;
     this.barTime = 0;
     this.currentNote = 0;
     this.duration = 0;
@@ -133,6 +148,7 @@ DrumApp.prototype.init = function(container) {
     this.playNow = false;
     this.playing = false;
     this.playingTime = 0;
+    this.trackCompleted = false;
 };
 
 DrumApp.prototype.createScene = function() {
@@ -207,6 +223,7 @@ DrumApp.prototype.setDuration = function(duration) {
 
 DrumApp.prototype.playScore = function() {
     //Set play button to pause
+    this.trackCompleted = false;
     this.playing = !this.playing;
     let elem = $('#play');
     elem.attr("src", this.playing ? "images/pause-button.png" : "images/play-button.png");
@@ -214,18 +231,12 @@ DrumApp.prototype.playScore = function() {
 
 DrumApp.prototype.resetScore = function() {
     //Reset everything
-    let bar, i, len;
     this.currentBar = 0;
-    this.timeNow = 0;
-    this.playNow = false;
     this.currentNote = 0;
-    for(i=0; i<this.drumIndex.length; ++i) {
-        this.drumIndex[i] = 0;
-    }
-    for(i= 0, len=this.hitMeshes.length; i<len; ++i) {
-        this.hitMeshes[i].visible = false;
-        this.hitMeshes[i].timerStart = 0;
-    }
+    this.notesThisBar = score[this.currentBar].length;
+    this.playing = false;
+    this.playingTime = 0;
+    $('#play').attr("src", "images/play-button.png");
 };
 
 DrumApp.prototype.getNextTime = function() {
@@ -249,6 +260,17 @@ DrumApp.prototype.getNextNotes = function() {
 
 DrumApp.prototype.updateNoteIndex = function(offset) {
     this.currentNote += offset;
+    if(this.currentNote >= this.notesThisBar) {
+        if(++this.currentBar >= this.numBars) {
+            this.trackCompleted = true;
+            this.resetScore();
+        } else {
+            this.currentNote = 0;
+            this.notesThisBar = score[this.currentBar].length;
+            //Bit of a hack as need to know length of note before starting next bar
+            this.playingTime = -0.5 * soundManager.getDuration();
+        }
+    }
 };
 
 DrumApp.prototype.createGUI = function() {
@@ -305,10 +327,10 @@ DrumApp.prototype.update = function() {
     let delta = this.clock.getDelta();
     this.elapsedTime += delta;
 
-    if(this.playing && soundManager.soundsLoaded()) {
+    if(this.playing && soundManager.soundsLoaded() && !this.trackCompleted) {
         this.playingTime += delta;
         let nextTime = this.getNextTime(), i;
-        if(this.playingTime >= nextTime) {
+        if(this.playingTime >= (nextTime * soundManager.getDuration())) {
             //Get all notes playing at this time
             let notes = this.getNextNotes();
             for(i=0; i<notes.length; ++i) {
