@@ -18,7 +18,7 @@
     <script type="text/javascript" src="js/detector.js"></script>
     <script type="text/javascript" src="js/baseApp.js?v=0.2"></script>
     <script type="text/javascript" src="js/audioManager.js?v=0.2"></script>
-    <script type="text/javascript" src="js/drums.js?v=0.6"></script>
+    <script type="text/javascript" src="js/drums.js?v=0.8"></script>
 
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/bootstrap-theme.min.css">
@@ -33,9 +33,13 @@
 <div id="WebGL-output">
 </div>
 <div id="score" class="infoPanel">
-    <img src="images/drumScore1.jpg">
+    <img id="scoreImage" src="images/drumScore1.jpg">
 </div>
+<div id="timeLineContainer" class="infoPanel">
+    <canvas id="timeLine">
 
+    </canvas>
+</div>
 <div id="controls" class="infoPanel">
     <input type="text" value="60" class="dial">
     <div id="playback" class="centred">

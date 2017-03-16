@@ -215,6 +215,32 @@ DrumApp.prototype.createScene = function() {
     this.scenes[this.currentScene].add(box);
     box.name = "Box";
     box.visible = false;
+
+    //Timeline
+    //See if score has loaded and set canvas height accordingly
+    let scoreElem = document.getElementById("scoreImage");
+    if(scoreElem.complete) {
+        this.setCanvasSize(scoreElem);
+    } else {
+        scoreElem.addEventListener('load', this.setCanvasSize(scoreElem));
+    }
+};
+
+DrumApp.prototype.setCanvasSize = function(img) {
+    let height = img.clientHeight;
+    let width = img.clientWidth;
+    //DEBUG
+    console.log("Height =",height, "Width =", width);
+
+    let c = document.getElementById("timeLine");
+    this.ctx = c.getContext('2d');
+    this.ctx.canvas.width = width;
+    this.ctx.canvas.height = height;
+    this.canvasHeight = height;
+    this.startNote = 30;
+
+    this.ctx.fillStyle = "#ff0000";
+    this.ctx.fillRect(this.startNote, 10, 5, this.canvasHeight);
 };
 
 DrumApp.prototype.setDuration = function(duration) {
@@ -324,6 +350,9 @@ DrumApp.prototype.changeBoxPos = function(pos, axis) {
 
 DrumApp.prototype.update = function() {
     BaseApp.prototype.update.call(this);
+
+
+
     let delta = this.clock.getDelta();
     this.elapsedTime += delta;
 
