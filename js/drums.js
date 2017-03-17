@@ -230,17 +230,24 @@ DrumApp.prototype.setCanvasSize = function(img) {
     let height = img.clientHeight;
     let width = img.clientWidth;
     //DEBUG
-    console.log("Height =",height, "Width =", width);
+    //console.log("Height =",height, "Width =", width);
 
     let c = document.getElementById("timeLine");
     this.ctx = c.getContext('2d');
     this.ctx.canvas.width = width;
     this.ctx.canvas.height = height;
-    this.canvasHeight = height;
-    this.startNote = 30;
+
+    let timeLineProps = {
+        start: 128,
+        moveScale: 220,
+        yPos: 10,
+        width: 5,
+        height: height
+    };
 
     this.ctx.fillStyle = "#ff0000";
-    this.ctx.fillRect(this.startNote, 10, 5, this.canvasHeight);
+    this.ctx.fillRect(timeLineProps.start, timeLineProps.yPos, timeLineProps.width, timeLineProps.height);
+    this.timeLineProps = timeLineProps;
 };
 
 DrumApp.prototype.setDuration = function(duration) {
@@ -350,14 +357,17 @@ DrumApp.prototype.changeBoxPos = function(pos, axis) {
 
 DrumApp.prototype.update = function() {
     BaseApp.prototype.update.call(this);
-
-
-
     let delta = this.clock.getDelta();
     this.elapsedTime += delta;
 
     if(this.playing && soundManager.soundsLoaded() && !this.trackCompleted) {
         this.playingTime += delta;
+
+        //Update timeline
+        this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+        this.ctx.fillRect(this.timeLineProps.start + (this.playingTime * this.timeLineProps.moveScale), this.timeLineProps.yPos,
+            this.timeLineProps.width, this.timeLineProps.height);
+
         let nextTime = this.getNextTime(), i;
         if(this.playingTime >= (nextTime * soundManager.getDuration())) {
             //Get all notes playing at this time
