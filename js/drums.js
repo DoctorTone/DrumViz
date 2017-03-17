@@ -184,11 +184,10 @@ DrumApp.prototype.createScene = function() {
     this.scenes[this.currentScene].add(floor);
 
     //Load in model
-    let _this = this;
     this.loader = new THREE.JSONLoader();
-    this.loader.load("./models/luis_drumset.json", function(geometry, materials) {
-        _this.drumMesh = new THREE.Mesh(geometry, new THREE.MultiMaterial(materials));
-        _this.scenes[_this.currentScene].add(_this.drumMesh);
+    this.loader.load("./models/luis_drumset.json", (geometry, materials) => {
+        this.drumMesh = new THREE.Mesh(geometry, new THREE.MultiMaterial(materials));
+        this.scenes[this.currentScene].add(this.drumMesh);
     });
 
     //Hit visualisations
@@ -252,7 +251,7 @@ DrumApp.prototype.resetTimeLine = function() {
         this.timeLineProps.width, this.timeLineProps.height);
 };
 
-DrumApp.prototype.setDuration = function(duration) {
+DrumApp.prototype.setDuration = duration => {
     soundManager.setDuration(duration);
 };
 
@@ -309,9 +308,8 @@ DrumApp.prototype.updateNoteIndex = function(offset) {
     }
 };
 
-DrumApp.prototype.createGUI = function() {
+DrumApp.prototype.createGUI = () => {
     //Create GUI - use dat.GUI for now
-    let _this = this;
     this.guiControls = new function() {
         this.X = 0;
         this.Y = 0;
@@ -319,18 +317,18 @@ DrumApp.prototype.createGUI = function() {
     };
 
     let gui = new dat.GUI();
-    gui.add(this.guiControls, "X", -500, 500).onChange(function(value) {
-        _this.changeBoxPos(value, -1);
+    gui.add(this.guiControls, "X", -500, 500).onChange(value => {
+        this.changeBoxPos(value, -1);
     });
-    gui.add(this.guiControls, "Y", -500, 500).onChange(function(value) {
-        _this.changeBoxPos(value, 0);
+    gui.add(this.guiControls, "Y", -500, 500).onChange(value => {
+        this.changeBoxPos(value, 0);
     });
-    gui.add(this.guiControls, "Z", -500, 500).onChange(function(value) {
-        _this.changeBoxPos(value, 1);
+    gui.add(this.guiControls, "Z", -500, 500).onChange(value =>{
+        this.changeBoxPos(value, 1);
     });
 };
 
-DrumApp.prototype.changeBoxPos = function(pos, axis) {
+DrumApp.prototype.changeBoxPos = (pos, axis) => {
     //Move box around scene
     let box = this.scene.getObjectByName("Box", true);
     if(!box) {
@@ -396,7 +394,7 @@ DrumApp.prototype.keydown = function(event) {
     }
 };
 
-$(document).ready(function() {
+$(document).ready(() => {
     //Drums
     const defaultBPM = 60;
     let drumNames = ["hihat", "snare", "uppertom", "midtom",
@@ -429,7 +427,7 @@ $(document).ready(function() {
         "inputColor": "#000000",
         "fgColor": "#632523",
         "width": 200,
-        "change": function(value) {
+        "change": value => {
             app.setDuration(value);
         }
     });
