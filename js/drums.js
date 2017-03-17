@@ -218,12 +218,8 @@ DrumApp.prototype.createScene = function() {
 
     //Timeline
     //See if score has loaded and set canvas height accordingly
-    let scoreElem = document.getElementById("scoreImage");
-    if(scoreElem.complete) {
-        this.setCanvasSize(scoreElem);
-    } else {
-        scoreElem.addEventListener('load', this.setCanvasSize(scoreElem));
-    }
+    let scoreElem = document.getElementById("score");
+    this.setCanvasSize(scoreElem);
 };
 
 DrumApp.prototype.setCanvasSize = function(img) {
@@ -250,6 +246,12 @@ DrumApp.prototype.setCanvasSize = function(img) {
     this.timeLineProps = timeLineProps;
 };
 
+DrumApp.prototype.resetTimeLine = function() {
+    this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+    this.ctx.fillRect(this.timeLineProps.start, this.timeLineProps.yPos,
+        this.timeLineProps.width, this.timeLineProps.height);
+};
+
 DrumApp.prototype.setDuration = function(duration) {
     soundManager.setDuration(duration);
 };
@@ -270,6 +272,7 @@ DrumApp.prototype.resetScore = function() {
     this.playing = false;
     this.playingTime = 0;
     $('#play').attr("src", "images/play-button.png");
+    this.resetTimeLine();
 };
 
 DrumApp.prototype.getNextTime = function() {
@@ -408,12 +411,16 @@ $(document).ready(function() {
     //app.createGUI();
     app.createScene();
 
-    $(document).keydown(function(event) {
+    $(document).keydown(event => {
         app.keydown(event);
     });
 
-    $('#play').on('click', function() {
+    $('#play').on('click', () => {
         app.playScore();
+    });
+
+    $('#rewind').on('click', () => {
+        app.resetScore()
     });
 
     $('.dial').knob({
