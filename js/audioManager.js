@@ -72,6 +72,7 @@ drumManager.prototype = {
     },
 
     playSound: function(sound) {
+        if(sound === -1) return;
         let source = this.context.createBufferSource();
         this.sources.push(source);
         source.buffer = this.soundBuffers[sound];

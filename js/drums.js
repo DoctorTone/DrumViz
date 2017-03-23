@@ -5,6 +5,7 @@
 //Extend app from base
 let HIHAT=0, SNARE=1, UPPERTOM=2, MIDTOM=3;
 let FLOORTOM=4, KICK=5, CRASH=6, RIDE=7;
+let NONE=-1;
 
 let soundManager = null;
 
@@ -51,7 +52,8 @@ let score = [
         { time: 2.5, drum: HIHAT },
         { time: 3, drum: HIHAT },
         { time: 3, drum: SNARE },
-        { time: 3.5, drum: HIHAT }
+        { time: 3.5, drum: HIHAT },
+        { time: 4.0, drum: NONE}
     ],
     [
         { time: 0, drum: HIHAT },
@@ -65,7 +67,8 @@ let score = [
         { time: 2.5, drum: HIHAT },
         { time: 3, drum: HIHAT },
         { time: 3, drum: SNARE },
-        { time: 3.5, drum: HIHAT }
+        { time: 3.5, drum: HIHAT },
+        { time: 4.0, drum: NONE}
     ]
 ];
 
@@ -230,10 +233,14 @@ class DrumApp extends BaseApp {
         this.ctx = c.getContext('2d');
         this.ctx.canvas.width = width;
         this.ctx.canvas.height = height;
+        let secondsPerBar = 4;
+        let startOffset = 0.13, endOffset = 0.975;
+        let moveScale = (endOffset - startOffset) * width;
+        moveScale /= secondsPerBar;
 
         let timeLineProps = {
-            start: 128,
-            moveScale: 220,
+            start: width*startOffset,
+            moveScale: moveScale,
             yPos: 10,
             width: 5,
             height: height
@@ -302,7 +309,7 @@ class DrumApp extends BaseApp {
                 this.currentNote = 0;
                 this.notesThisBar = score[this.currentBar].length;
                 //Bit of a hack as need to know length of note before starting next bar
-                this.playingTime = -0.5 * soundManager.getDuration();
+                this.playingTime = 0;
             }
         }
     }
@@ -362,14 +369,18 @@ class DrumApp extends BaseApp {
 
         if(this.playing && soundManager.soundsLoaded() && !this.trackCompleted) {
             this.playingTime += delta;
+            //DEBUG
+            console.log("Playing time =", this.playingTime);
 
             //Update timeline
+            let duration = soundManager.getDuration();
+            let moveScaleAdjust = 1/duration;
             this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-            this.ctx.fillRect(this.timeLineProps.start + (this.playingTime * this.timeLineProps.moveScale), this.timeLineProps.yPos,
+            this.ctx.fillRect(this.timeLineProps.start + (this.playingTime * this.timeLineProps.moveScale * moveScaleAdjust), this.timeLineProps.yPos,
                 this.timeLineProps.width, this.timeLineProps.height);
 
             let nextTime = this.getNextTime(), i;
-            if(this.playingTime >= (nextTime * soundManager.getDuration())) {
+            if(this.playingTime >= (nextTime * duration)) {
                 //Get all notes playing at this time
                 let notes = this.getNextNotes();
                 for(i=0; i<notes.length; ++i) {
