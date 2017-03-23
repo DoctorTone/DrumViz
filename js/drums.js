@@ -187,8 +187,9 @@ class DrumApp extends BaseApp {
 
         //Load in model
         this.loader = new THREE.JSONLoader();
-        this.loader.load("./models/luis_drumset.json", (geometry, materials) => {
+        this.loader.load("./models/drumset.json", (geometry, materials) => {
             this.drumMesh = new THREE.Mesh(geometry, new THREE.MultiMaterial(materials));
+            this.drumMesh.position.set(2, 0, 0);
             this.scenes[this.currentScene].add(this.drumMesh);
         });
 

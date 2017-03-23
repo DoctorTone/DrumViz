@@ -162,7 +162,7 @@ class BaseApp {
     }
 
     createCamera() {
-        this.defaultCamPos = new THREE.Vector3(-3, 4, 7);
+        this.defaultCamPos = new THREE.Vector3(0, 5, 5.5);
         this.camera = new THREE.PerspectiveCamera(45, this.container.clientWidth / window.innerHeight, 0.1, 5000);
         this.camera.position.copy(this.defaultCamPos);
 
@@ -180,7 +180,7 @@ class BaseApp {
 
         this.controls.keys = [65, 83, 68];
 
-        let lookAt = new THREE.Vector3(2, 2, 1);
+        let lookAt = new THREE.Vector3(2, 1.5, 0);
         this.controls.setLookAt(lookAt);
     }
 
