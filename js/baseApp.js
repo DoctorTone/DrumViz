@@ -33,9 +33,9 @@ class BaseApp {
         this.createRenderer();
         this.createCamera();
         this.createControls();
-        //this.stats = initStats();
+        this.stats = this.initStats();
         this.statsShowing = false;
-        //$("#Stats-output").hide();
+        this.statsShowing ? $("#Stats-output").show() : $('#Stats-output').hide();
     }
 
     createRenderer() {
@@ -51,10 +51,6 @@ class BaseApp {
         }
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         this.container.appendChild(this.renderer.domElement);
-
-        window.addEventListener('keydown', event => {
-            this.keydown(event);
-        }, false);
 
         window.addEventListener('resize', event => {
             this.windowResize(event);

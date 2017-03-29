@@ -370,7 +370,7 @@ class DrumApp extends BaseApp {
 
         if(this.playing && soundManager.soundsLoaded() && !this.trackCompleted) {
             this.playingTime += delta;
-            //DEBUG
+            //DEBUGs
             console.log("Playing time =", this.playingTime);
 
             //Update timeline
@@ -389,19 +389,6 @@ class DrumApp extends BaseApp {
                 }
                 this.updateNoteIndex(notes.length);
             }
-        }
-    }
-
-    keydown(event) {
-        //Do any key processing
-        switch(event.keyCode) {
-            case 80: //P
-                console.log("Cam =", this.camera.position);
-                console.log("Look =", this.controls.getLookAt());
-                break;
-
-            default :
-                break;
         }
     }
 }
