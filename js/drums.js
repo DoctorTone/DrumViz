@@ -125,6 +125,8 @@ var score = [
     ];
 */
 
+const X_AXIS = 0, Y_AXIS = 1, Z_AXIS = 2;
+
 class DrumApp extends BaseApp {
     constructor() {
         super();
@@ -161,14 +163,14 @@ class DrumApp extends BaseApp {
         let drumNames = ["hihat", "snare", "uppertom", "midtom",
             "floortom", "kick", "crash", "ride"];
         let pos = [
-            -207, 237, 64, //Hihat
-            -100, 190, 96, //Snare
-            -88, 259, -20, //Upper tom
-            50, 259, -23,  //Mid tom
-            153, 161, 66,  //Floor tom
-            -23, 14, 20,   //Kick
-            -197, 291, -56,//Crash
-            161, 313, -77
+            -14.2, 21.25, 7.5, //Hihat
+            -5.7, 19.8, 8.5, //Snare
+            -4.7, 22.6, -0.9, //Upper tom
+            5.7, 22.6, -0.9,  //Mid tom
+            12.3, 18.9, 7.5,  //Floor tom
+            0, 2.8, 0,   //Kick
+            -8.5, 25.5, -4.7,//Crash
+            11.3, 25.5, -1.9 //Ride
         ];
         let drumPos = [];
         let visPos, i, len;
@@ -189,29 +191,36 @@ class DrumApp extends BaseApp {
         this.loader = new THREE.JSONLoader();
         this.loader.load("./models/drumset.json", (geometry, materials) => {
             this.drumMesh = new THREE.Mesh(geometry, new THREE.MultiMaterial(materials));
-            this.drumMesh.position.set(2, 0, 0);
+            this.drumMesh.position.set(0, 0, 0);
+            this.drumMesh.scale.set(10, 10, 10);
             this.scenes[this.currentScene].add(this.drumMesh);
         });
 
         //Hit visualisations
-        let hitGeom, hitMesh, hitHeight = 50;
+        let hitMeshConfig = {
+            radius: 0.35,
+            widthSegments: 8,
+            heightSegments: 8,
+            hitTime: 0.1
+        };
+        let hitGeom, hitMesh;
         let hitMat = new THREE.MeshLambertMaterial( {color: 0xff0000} );
         this.hitMeshes = [];
         for(i=0, len=drumPos.length; i<len; ++i) {
-            hitGeom = new THREE.CylinderBufferGeometry(1, 1, hitHeight, 8, 1);
+            hitGeom = new THREE.SphereBufferGeometry(hitMeshConfig.radius, hitMeshConfig.widthSegments, hitMeshConfig.heightSegments);
             hitMesh = new THREE.Mesh(hitGeom, hitMat);
-            hitMesh.position.set(drumPos[i].x, drumPos[i].y+(hitHeight/2), drumPos[i].z);
+            hitMesh.position.set(drumPos[i].x, drumPos[i].y, drumPos[i].z);
             hitMesh.name = drumNames[i];
             hitMesh.visible = false;
+            hitMesh.hitStart = -1;
+            hitMesh.hitTime = hitMeshConfig.hitTime;
             this.scenes[this.currentScene].add(hitMesh);
             this.hitMeshes.push(hitMesh);
             this.hitMeshes.timerStart = 0;
         }
 
-        this.hitMeshes[KICK].rotation.x = Math.PI/2;
-        //DEBUG
         //Positioning helper
-        let boxGeom = new THREE.BoxBufferGeometry(10, 10, 10);
+        let boxGeom = new THREE.BoxBufferGeometry(1, 1, 1);
         let boxMat = new THREE.MeshBasicMaterial( {color: 0xffffff});
         let box = new THREE.Mesh(boxGeom, boxMat);
         this.scenes[this.currentScene].add(box);
@@ -316,44 +325,48 @@ class DrumApp extends BaseApp {
     }
 
     createGUI() {
-        //Create GUI - use dat.GUI for now
-        this.guiControls = new function() {
-            this.X = 0;
-            this.Y = 0;
-            this.Z = 0;
+        //Create GUI - controlKit
+        let drumConfig = {
+            xPos: 0,
+            yPos: 0,
+            zPos: 0,
+            posRange : [-50, 50]
         };
 
-        let gui = new dat.GUI();
-        gui.add(this.guiControls, "X", -500, 500).onChange(value => {
-            this.changeBoxPos(value, -1);
-        });
-        gui.add(this.guiControls, "Y", -500, 500).onChange(value => {
-            this.changeBoxPos(value, 0);
-        });
-        gui.add(this.guiControls, "Z", -500, 500).onChange(value =>{
-            this.changeBoxPos(value, 1);
-        });
+        let controlKit = new ControlKit();
+
+        controlKit.addPanel( {width: 250, align: 'left'} )
+            .addGroup( {label: 'Position', enable: false} )
+            .addSlider(drumConfig, 'xPos', 'posRange', { label: 'XPos', dp: 1, step: 0.1, onChange: () => {
+                this.changeBoxPos(X_AXIS, drumConfig.xPos);
+            }})
+            .addSlider(drumConfig, 'yPos', 'posRange', { label: 'YPos', dp: 1, step: 0.1, onChange: () => {
+                this.changeBoxPos(Y_AXIS, drumConfig.yPos);
+            }})
+            .addSlider(drumConfig, 'zPos', 'posRange', { label: 'ZPos', dp: 1, step: 0.1, onChange: () => {
+                this.changeBoxPos(Z_AXIS, drumConfig.zPos);
+            }})
     }
 
-    changeBoxPos(pos, axis) {
+    changeBoxPos(axis, pos) {
         //Move box around scene
-        let box = this.scene.getObjectByName("Box", true);
+        let box = this.scenes[this.currentScene].getObjectByName("Box", true);
         if(!box) {
             console.log("No box in scene");
         }
 
         switch(axis) {
-            case -1:
+            case X_AXIS:
                 //X-axis
                 box.position.x = pos;
                 break;
 
-            case 0:
+            case Y_AXIS:
                 //Y-axis
                 box.position.y = pos;
                 break;
 
-            case 1:
+            case Z_AXIS:
                 //Z-axis
                 box.position.z = pos;
                 break;
@@ -384,10 +397,27 @@ class DrumApp extends BaseApp {
             if(this.playingTime >= (nextTime * duration)) {
                 //Get all notes playing at this time
                 let notes = this.getNextNotes();
+                let currentNote;
                 for(i=0; i<notes.length; ++i) {
-                    soundManager.playSound(notes[i]);
+                    currentNote = notes[i];
+                    soundManager.playSound(currentNote);
+                    if(currentNote >= 0) {
+                        this.hitMeshes[currentNote].visible = true;
+                        this.hitMeshes[currentNote].hitStart = this.playingTime;
+                    }
                 }
                 this.updateNoteIndex(notes.length);
+            }
+
+            let numHitMeshes = this.hitMeshes.length, currentHitMesh;
+            for(i=0; i<numHitMeshes; ++i) {
+                currentHitMesh = this.hitMeshes[i];
+                if(currentHitMesh.hitStart >= 0) {
+                    if(this.playingTime > (currentHitMesh.hitStart + currentHitMesh.hitTime)) {
+                        currentHitMesh.visible = false;
+                        currentHitMesh.hitStart = -1;
+                    }
+                }
             }
         }
     }
