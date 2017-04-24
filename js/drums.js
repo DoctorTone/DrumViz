@@ -229,20 +229,30 @@ class DrumApp extends BaseApp {
 
         //Timeline
         //See if score has loaded and set canvas height accordingly
-        let scoreElem = document.getElementById("score");
-        this.setCanvasSize(scoreElem);
+        //let scoreElem = document.getElementById("score");
+        this.setCanvasSize();
     }
 
-    setCanvasSize(img) {
-        let height = img.clientHeight;
-        let width = img.clientWidth;
+    setCanvasSize() {
         //DEBUG
         //console.log("Height =",height, "Width =", width);
+        let container = $("#timeLineContainer");
+        let width = container.width();
+        let height = container.height();
 
-        let c = document.getElementById("timeLine");
-        this.ctx = c.getContext('2d');
+        //Create canvas
+        let canvas = document.createElement("canvas");
+        canvas.id = "timeLine";
+        this.ctx = canvas.getContext('2d');
         this.ctx.canvas.width = width;
         this.ctx.canvas.height = height;
+        container.append(canvas);
+
+        //Create score
+        let score = document.createElement("img");
+        score.src = "images/drumScore1.jpg";
+        $('#scoreContainer').append(score);
+
         let secondsPerBar = 4;
         let startOffset = 0.13, endOffset = 0.975;
         let moveScale = (endOffset - startOffset) * width;
@@ -253,7 +263,7 @@ class DrumApp extends BaseApp {
             moveScale: moveScale,
             yPos: 10,
             width: 5,
-            height: height
+            height: height*0.9
         };
 
         this.ctx.fillStyle = "#ff0000";
@@ -268,6 +278,8 @@ class DrumApp extends BaseApp {
     }
 
     setDuration(duration) {
+        //DEBUG
+        console.log("Duration = ", duration);
         soundManager.setDuration(duration);
     }
 
@@ -383,8 +395,8 @@ class DrumApp extends BaseApp {
 
         if(this.playing && soundManager.soundsLoaded() && !this.trackCompleted) {
             this.playingTime += delta;
-            //DEBUGs
-            console.log("Playing time =", this.playingTime);
+            //DEBUG
+            //console.log("Playing time =", this.playingTime);
 
             //Update timeline
             let duration = soundManager.getDuration();
@@ -455,8 +467,11 @@ $(document).ready(() => {
         "max": 220,
         "inputColor": "#000000",
         "fgColor": "#632523",
-        "width": 200,
+        "width": "100%",
         "change": value => {
+            app.setDuration(value);
+        },
+        "release": function(value) {
             app.setDuration(value);
         }
     });

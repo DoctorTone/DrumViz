@@ -8,7 +8,7 @@
 
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/bootstrap-theme.min.css">
-    <link href="css/drumStyles.css?v=0.2" rel="stylesheet" type="text/css">
+    <link href="css/drumStyles.css?v=0.5" rel="stylesheet" type="text/css">
 
     <script type="text/javascript" src="js/three84.js"></script>
     <script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
@@ -24,7 +24,7 @@
     <script type="text/javascript" src="js/baseApp.js?v=0.5"></script>
     <script type="text/javascript" src="js/audioManager.js?v=0.3"></script>
     <script type="text/javascript" src="js/controlKit.min.js?v=0.1"></script>
-    <script type="text/javascript" src="js/drums.js?v=0.13"></script>
+    <script type="text/javascript" src="js/drums.js?v=0.14"></script>
 
 </head>
 <body>
@@ -34,14 +34,19 @@
 <!-- Div which will hold the Output -->
 <div id="WebGL-output">
 </div>
-<div id="score" class="infoPanel">
-    <img id="scoreImage" src="images/drumScore1.jpg">
-</div>
-<div id="timeLineContainer" class="infoPanel">
-    <canvas id="timeLine">
 
-    </canvas>
+<div id="scoreContainer" class="infoPanel">
+
 </div>
+
+<div id="timeLineContainer" class="infoPanel">
+
+</div>
+
+<div id="titleContainer" class="infoPanel centred">
+    <p>Drumset For Beginners 1</p>
+</div>
+
 <div id="controls" class="infoPanel">
     <input type="text" value="60" class="dial">
     <div id="playback" class="centred">

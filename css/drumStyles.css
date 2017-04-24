@@ -29,20 +29,27 @@
     left: 33.333%;
     width: 33.333%;
 }
-#score {
-    top: 1%;
+#timeLineContainer,
+#scoreContainer {
+    top: 7%;
     left: 20%;
     width: 60%;
+    height: 17%;
     border: 6px solid #949494;
     border-radius: 5px;
 }
-#score img {
+#scoreContainer img {
     width: 100%;
+    height: 100%;
 }
-#timeLineContainer {
-    top: 1%;
-    left: 20%;
-    width: 60%;
+#titleContainer {
+    top:0%;
+    left: 30%;
+    width: 40%;
+}
+#titleContainer p {
+    font-size: 2vw;
+    color: #ffd54c;
 }
 #controls {
     top: 1%;
