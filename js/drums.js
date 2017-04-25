@@ -39,7 +39,7 @@ var score = [
 */
 
 
-let score = [
+let score0 = [
     [
         { time: 0, drum: HIHAT },
         { time: 0, drum: KICK },
@@ -68,6 +68,74 @@ let score = [
         { time: 3, drum: HIHAT },
         { time: 3, drum: SNARE },
         { time: 3.5, drum: HIHAT },
+        { time: 4.0, drum: NONE}
+    ]
+];
+
+let score1 = [
+    [
+        { time: 0, drum: HIHAT },
+        { time: 0, drum: KICK },
+        { time: 0.5, drum: HIHAT },
+        { time: 1, drum: HIHAT },
+        { time: 1, drum: SNARE },
+        { time: 1.5, drum: HIHAT },
+        { time: 2, drum: HIHAT },
+        { time: 2.5, drum: HIHAT },
+        { time: 2.5, drum: KICK },
+        { time: 3, drum: HIHAT },
+        { time: 3, drum: SNARE },
+        { time: 3.5, drum: HIHAT },
+        { time: 4.0, drum: NONE}
+    ],
+    [
+        { time: 0, drum: HIHAT },
+        { time: 0, drum: KICK },
+        { time: 0.5, drum: HIHAT },
+        { time: 1, drum: HIHAT },
+        { time: 1, drum: SNARE },
+        { time: 1.5, drum: HIHAT },
+        { time: 2, drum: HIHAT },
+        { time: 2.5, drum: HIHAT },
+        { time: 2.5, drum: KICK },
+        { time: 3, drum: HIHAT },
+        { time: 3, drum: SNARE },
+        { time: 3.5, drum: HIHAT },
+        { time: 4.0, drum: NONE}
+    ]
+];
+
+let score2 = [
+    [
+        { time: 0, drum: HIHAT },
+        { time: 0, drum: KICK },
+        { time: 0.5, drum: HIHAT },
+        { time: 1, drum: HIHAT },
+        { time: 1, drum: SNARE },
+        { time: 1.5, drum: HIHAT },
+        { time: 2, drum: HIHAT },
+        { time: 2, drum: KICK },
+        { time: 2.5, drum: HIHAT },
+        { time: 3, drum: HIHAT },
+        { time: 3, drum: SNARE },
+        { time: 3.5, drum: HIHAT },
+        { time: 3.5, drum: SNARE },
+        { time: 4.0, drum: NONE}
+    ],
+    [
+        { time: 0, drum: HIHAT },
+        { time: 0, drum: KICK },
+        { time: 0.5, drum: HIHAT },
+        { time: 1, drum: HIHAT },
+        { time: 1, drum: SNARE },
+        { time: 1.5, drum: HIHAT },
+        { time: 2, drum: HIHAT },
+        { time: 2, drum: KICK },
+        { time: 2.5, drum: HIHAT },
+        { time: 3, drum: HIHAT },
+        { time: 3, drum: SNARE },
+        { time: 3.5, drum: HIHAT },
+        { time: 3.5, drum: SNARE },
         { time: 4.0, drum: NONE}
     ]
 ];
@@ -141,13 +209,13 @@ class DrumApp extends BaseApp {
             this.drumIndex.push(0);
         }
         this.currentBar = 0;
-        this.notesThisBar = score[this.currentBar].length;
-        this.numBars = score.length;
+        this.currentScore = score2;
+        this.notesThisBar = this.currentScore[this.currentBar].length;
+        this.numBars = this.currentScore.length;
         this.barTime = 0;
         this.currentNote = 0;
         this.duration = 0;
         this.hitDelay = 0.1;
-        this.currentScore = [];
         this.timeNow = 0;
         this.playNow = false;
         this.playing = false;
@@ -250,7 +318,7 @@ class DrumApp extends BaseApp {
 
         //Create score
         let score = document.createElement("img");
-        score.src = "images/drumScore1.jpg";
+        score.src = "images/drumScore3.jpg";
         $('#scoreContainer').append(score);
 
         let secondsPerBar = 4;
@@ -295,7 +363,7 @@ class DrumApp extends BaseApp {
         //Reset everything
         this.currentBar = 0;
         this.currentNote = 0;
-        this.notesThisBar = score[this.currentBar].length;
+        this.notesThisBar = this.currentScore[this.currentBar].length;
         this.playing = false;
         this.playingTime = 0;
         $('#play').attr("src", "images/play-button.png");
@@ -304,13 +372,13 @@ class DrumApp extends BaseApp {
 
     getNextTime() {
         //Get next note at current time index
-        let bar = score[this.currentBar];
+        let bar = this.currentScore[this.currentBar];
         return bar[this.currentNote].time;
     }
 
     getNextNotes() {
         let notes = [];
-        let bar = score[this.currentBar], i;
+        let bar = this.currentScore[this.currentBar], i;
         let currentTime = bar[this.currentNote].time;
         for(i=0; i<bar.length; ++i) {
             if(bar[i].time === currentTime) {
@@ -329,7 +397,7 @@ class DrumApp extends BaseApp {
                 this.resetScore();
             } else {
                 this.currentNote = 0;
-                this.notesThisBar = score[this.currentBar].length;
+                this.notesThisBar = this.currentScore[this.currentBar].length;
                 //Bit of a hack as need to know length of note before starting next bar
                 this.playingTime = 0;
             }
@@ -389,7 +457,7 @@ class DrumApp extends BaseApp {
     }
 
     update() {
-        BaseApp.prototype.update.call(this);
+        super.update();
         let delta = this.clock.getDelta();
         this.elapsedTime += delta;
 
