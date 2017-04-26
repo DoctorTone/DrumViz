@@ -209,7 +209,7 @@ class DrumApp extends BaseApp {
             this.drumIndex.push(0);
         }
         this.currentBar = 0;
-        this.currentScore = score2;
+        this.currentScore = score0;
         this.notesThisBar = this.currentScore[this.currentBar].length;
         this.numBars = this.currentScore.length;
         this.barTime = 0;
@@ -318,7 +318,8 @@ class DrumApp extends BaseApp {
 
         //Create score
         let score = document.createElement("img");
-        score.src = "images/drumScore3.jpg";
+        score.id = "scoreImage";
+        score.src = "images/drumScore1.jpg";
         $('#scoreContainer').append(score);
 
         let secondsPerBar = 4;
@@ -347,7 +348,7 @@ class DrumApp extends BaseApp {
 
     setDuration(duration) {
         //DEBUG
-        console.log("Duration = ", duration);
+        //console.log("Duration = ", duration);
         soundManager.setDuration(duration);
     }
 
@@ -501,6 +502,47 @@ class DrumApp extends BaseApp {
             }
         }
     }
+
+    changeScore(option) {
+        $('#scoreNum').html(option);
+        $('#scoreImage').attr("src", "images/drumScore"+option+".jpg");
+        //Doo this properly later
+        switch (option) {
+            case "1":
+                this.currentScore = score0;
+                break;
+
+            case "2":
+                this.currentScore = score1;
+                break;
+
+            case "3":
+                this.currentScore = score2;
+                break;
+
+            default:
+                break;
+        }
+        this.resetScore();
+    }
+
+    canvasResize() {
+        let container = $("#timeLineContainer");
+        let width = container.width();
+        let height = container.height();
+        this.ctx.canvas.width = width;
+        this.ctx.canvas.height = height;
+        this.ctx.fillStyle = "#ff0000";
+        this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+        this.ctx.fillRect(this.timeLineProps.start, this.timeLineProps.yPos,
+            this.timeLineProps.width, this.timeLineProps.height);
+    }
+
+    windowResize(event) {
+        //Handle window resize
+        super.windowResize(event);
+        this.canvasResize();
+    }
 }
 
 $(document).ready(() => {
@@ -530,18 +572,17 @@ $(document).ready(() => {
         app.resetScore()
     });
 
-    $('.dial').knob({
-        "min": 5,
-        "max": 220,
-        "inputColor": "#000000",
-        "fgColor": "#632523",
-        "width": "100%",
+    $(".dial").knob({
         "change": value => {
             app.setDuration(value);
         },
-        "release": function(value) {
+        "release": value => {
             app.setDuration(value);
         }
+    });
+
+    $('#track').on("change", function() {
+        app.changeScore(this.value);
     });
 
     app.run();
