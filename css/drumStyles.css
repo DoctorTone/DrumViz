@@ -59,4 +59,10 @@
 #playback img {
     width: 100%;
 }
-
+#instructions {
+    top: 1%;
+    left: 1%;
+}
+#instructions img {
+    width: 50%;
+}

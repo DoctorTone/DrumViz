@@ -322,28 +322,37 @@ class DrumApp extends BaseApp {
         score.src = "images/drumScore1.jpg";
         $('#scoreContainer').append(score);
 
-        let secondsPerBar = 4;
+        this.secondsPerBar = 4;
         let startOffset = 0.13, endOffset = 0.975;
         let moveScale = (endOffset - startOffset) * width;
-        moveScale /= secondsPerBar;
+        moveScale /= this.secondsPerBar;
 
         let timeLineProps = {
-            start: width*startOffset,
+            startOffset: startOffset,
+            endOffset: endOffset,
+            yOffset: 0.1,
+            widthScale: 0.05,
+            heightScale: 0.9
+        };
+
+        let timeLineValues = {
+            start: width * startOffset,
             moveScale: moveScale,
-            yPos: 10,
+            yPos: height * timeLineProps.yOffset,
             width: 5,
-            height: height*0.9
+            height: height * timeLineProps.heightScale
         };
 
         this.ctx.fillStyle = "#ff0000";
-        this.ctx.fillRect(timeLineProps.start, timeLineProps.yPos, timeLineProps.width, timeLineProps.height);
+        this.ctx.fillRect(timeLineValues.start, timeLineValues.yPos, timeLineValues.width, timeLineValues.height);
         this.timeLineProps = timeLineProps;
+        this.timeLineValues = timeLineValues;
     }
 
     resetTimeLine() {
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-        this.ctx.fillRect(this.timeLineProps.start, this.timeLineProps.yPos,
-            this.timeLineProps.width, this.timeLineProps.height);
+        this.ctx.fillRect(this.timeLineValues.start, this.timeLineValues.yPos,
+            this.timeLineValues.width, this.timeLineValues.height);
     }
 
     setDuration(duration) {
@@ -471,8 +480,8 @@ class DrumApp extends BaseApp {
             let duration = soundManager.getDuration();
             let moveScaleAdjust = 1/duration;
             this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-            this.ctx.fillRect(this.timeLineProps.start + (this.playingTime * this.timeLineProps.moveScale * moveScaleAdjust), this.timeLineProps.yPos,
-                this.timeLineProps.width, this.timeLineProps.height);
+            this.ctx.fillRect(this.timeLineValues.start + (this.playingTime * this.timeLineValues.moveScale * moveScaleAdjust), this.timeLineValues.yPos,
+                this.timeLineValues.width, this.timeLineValues.height);
 
             let nextTime = this.getNextTime(), i;
             if(this.playingTime >= (nextTime * duration)) {
@@ -534,8 +543,13 @@ class DrumApp extends BaseApp {
         this.ctx.canvas.height = height;
         this.ctx.fillStyle = "#ff0000";
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-        this.ctx.fillRect(this.timeLineProps.start, this.timeLineProps.yPos,
-            this.timeLineProps.width, this.timeLineProps.height);
+        this.timeLineValues.start = width * this.timeLineProps.startOffset;
+        let moveScale = (this.timeLineProps.endOffset - this.timeLineProps.startOffset) * width;
+        this.timeLineValues.moveScale = moveScale / this.secondsPerBar;
+        this.timeLineValues.yPos = height * this.timeLineProps.yOffset;
+        this.timeLineValues.height = height * this.timeLineProps.heightScale;
+        this.ctx.fillRect(this.timeLineValues.start, this.timeLineValues.yPos,
+            this.timeLineValues.width, this.timeLineValues.height);
     }
 
     windowResize(event) {
