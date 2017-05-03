@@ -18,6 +18,9 @@
 .scroll {
     overflow: auto;
 }
+.backgroundSubtle {
+    background-color: #5c5f64;
+}
 #notSupported {
     background: #a9434a;
     border-radius: 15px;
@@ -41,6 +44,22 @@
 #scoreContainer img {
     width: 100%;
     height: 100%;
+}
+.title {
+    text-align: center;
+    font-size: 2vw;
+    color: #ffd54c;
+}
+.contents {
+    margin: 0 10%;
+}
+.contents img {
+    margin-bottom: 1%;
+}
+.contents p {
+    font-size: 1vw;
+    color: #ffd54c;
+    text-align: justify;
 }
 #titleContainer {
     top:0%;
