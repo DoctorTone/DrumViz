@@ -1,0 +1,25 @@
+/**
+ * Created by DrTone on 04/05/2017.
+ */
+
+var gulp = require('gulp');
+var useref = require('gulp-useref');
+var uglify = require('gulp-uglify');
+var gulpIf = require('gulp-if');
+var cssnano = require('gulp-cssnano');
+var gutil = require('gulp-util');
+
+gulp.task('build', ['minify'], function() {
+
+});
+
+gulp.task('minify', function() {
+    return gulp.src('drumViz.html')
+        .pipe(useref())
+        .pipe(gulpIf('*.js', uglify()))
+        .on('error', function(err) {
+            gutil.log(gutil.colors.red('[Error]'), err.toString());
+        })
+        .pipe(gulpIf('*.css', cssnano()))
+        .pipe(gulp.dest('build'));
+});

@@ -201,7 +201,7 @@ class DrumApp extends BaseApp {
     }
 
     init(container) {
-        BaseApp.prototype.init.call(this, container);
+        super.init(container);
         this.scoreLoaded = false;
         const NUM_DRUMS = 8;
         this.drumIndex = [];
