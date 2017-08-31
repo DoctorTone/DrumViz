@@ -227,6 +227,30 @@ class DrumApp extends BaseApp {
         //Create scene
         super.createScene();
 
+        //Textures
+        let textureLoader = new THREE.TextureLoader();
+
+        //Create floor
+        let floorConfig = {
+            FLOOR_RADIUS : 60,
+            FLOOR_HEIGHT : 5,
+            FLOOR_SEGMENTS : 6,
+            FLOOR_X : 0,
+            FLOOR_Y : -2.5,
+            FLOOR_Z : -10,
+            REPEAT_X : 1,
+            REPEAT_Y : 3
+        };
+
+        textureLoader.load("textures/oldWoodenFloor.jpg", floorTex => {
+            floorTex.wrapS = floorTex.wrapT = THREE.RepeatWrapping;
+            floorTex.repeat.set(1, floorConfig.REPEAT_Y);
+            let floorGeom = new THREE.CylinderBufferGeometry(floorConfig.FLOOR_RADIUS, floorConfig.FLOOR_RADIUS, floorConfig.FLOOR_HEIGHT, floorConfig.FLOOR_SEGMENTS);
+            let floorMat = new THREE.MeshLambertMaterial( {map: floorTex} );
+            let floor = new THREE.Mesh(floorGeom, floorMat);
+            floor.position.set(floorConfig.FLOOR_X, floorConfig.FLOOR_Y, floorConfig.FLOOR_Z);
+            this.scenes[this.currentScene].add(floor);
+        });
         //Drums
         let drumNames = ["hihat", "snare", "uppertom", "midtom",
             "floortom", "kick", "crash", "ride"];
@@ -246,22 +270,6 @@ class DrumApp extends BaseApp {
             visPos = new THREE.Vector3(pos[i], pos[i+1], pos[i+2]);
             drumPos.push(visPos);
         }
-
-        //Create floor
-        let floorConfig = {
-            FLOOR_RADIUS : 60,
-            FLOOR_HEIGHT : 5,
-            FLOOR_SEGMENTS : 6,
-            FLOOR_X : 0,
-            FLOOR_Y : -2.5,
-            FLOOR_Z : 0
-        };
-        let floorGeom = new THREE.CylinderBufferGeometry(floorConfig.FLOOR_RADIUS, floorConfig.FLOOR_RADIUS, floorConfig.FLOOR_HEIGHT, floorConfig.FLOOR_SEGMENTS);
-        let floorMat = new THREE.MeshLambertMaterial( {color: 0x0000ff} );
-        let floor = new THREE.Mesh(floorGeom, floorMat);
-        floor.position.set(floorConfig.FLOOR_X, floorConfig.FLOOR_Y, floorConfig.FLOOR_Z);
-
-        this.scenes[this.currentScene].add(floor);
 
         //Load in model
         this.loader = new THREE.JSONLoader();
