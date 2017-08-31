@@ -39,12 +39,15 @@ body {
     left: 20%;
     width: 60%;
     height: 17%;
-    border: 6px solid #949494;
-    border-radius: 5px;
+    border: 6px solid #3e3e3e;
+    border-radius: 15px;
 }
 #scoreContainer img {
     width: 100%;
     height: 100%;
+}
+#dialContainer p {
+    font-weight: 600;
 }
 .title {
     text-align: center;

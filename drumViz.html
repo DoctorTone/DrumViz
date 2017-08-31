@@ -47,21 +47,24 @@
     <p>Simple Groove <span id="scoreNum">1</span></p>
 </div>
 
-<div id="controls" class="infoPanel centred">
-    <p>Beats Per Minute</p>
-    <input class="dial" value="60"  data-width="90%" data-fgColor="#632523" data-inputColor="#000000" data-min="5" data-max="220">
-    <div id="playback" class="centred">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-6">
-                    <img id="rewind" src="images/rewind-button.png">
-                </div>
-                <div class="col-md-6">
-                    <img id="play" src="images/play-button.png">
+<div id="controls" class="infoPanel">
+    <div id="dialContainer" class="centred">
+        <p>Beats Per Minute</p>
+        <input class="dial" value="60"  data-width="90%" data-fgColor="#632523" data-inputColor="#000000" data-min="5" data-max="220">
+        <div id="playback" class="centred">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-6">
+                        <img id="rewind" src="images/rewind-button.png">
+                    </div>
+                    <div class="col-md-6">
+                        <img id="play" src="images/play-button.png">
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
     <div class="form-group">
         <label for="track">Track:</label>
         <select class="form-control" id="track">
