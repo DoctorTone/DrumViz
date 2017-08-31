@@ -248,10 +248,18 @@ class DrumApp extends BaseApp {
         }
 
         //Create floor
-        let floorGeom = new THREE.CylinderBufferGeometry(400, 400, 10, 24, 1);
+        let floorConfig = {
+            FLOOR_RADIUS : 60,
+            FLOOR_HEIGHT : 5,
+            FLOOR_SEGMENTS : 6,
+            FLOOR_X : 0,
+            FLOOR_Y : -2.5,
+            FLOOR_Z : 0
+        };
+        let floorGeom = new THREE.CylinderBufferGeometry(floorConfig.FLOOR_RADIUS, floorConfig.FLOOR_RADIUS, floorConfig.FLOOR_HEIGHT, floorConfig.FLOOR_SEGMENTS);
         let floorMat = new THREE.MeshLambertMaterial( {color: 0x0000ff} );
         let floor = new THREE.Mesh(floorGeom, floorMat);
-        floor.position.y = -90;
+        floor.position.set(floorConfig.FLOOR_X, floorConfig.FLOOR_Y, floorConfig.FLOOR_Z);
 
         this.scenes[this.currentScene].add(floor);
 
@@ -573,10 +581,6 @@ $(document).ready(() => {
     app.init(container);
     //app.createGUI();
     app.createScene();
-
-    $(document).keydown(event => {
-        app.keydown(event);
-    });
 
     $('#play').on('click', () => {
         app.playScore();

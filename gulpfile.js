@@ -4,7 +4,7 @@
 
 var gulp = require('gulp');
 var useref = require('gulp-useref');
-var uglify = require('gulp-uglify');
+var uglify = require('uglify-es');
 var gulpIf = require('gulp-if');
 var cssnano = require('gulp-cssnano');
 var gutil = require('gulp-util');
