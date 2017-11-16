@@ -2,6 +2,8 @@
  * Created by DrTone on 01/06/2015.
  */
 
+const MOBILE_WIDTH = 768;
+
 //Extend app from base
 let HIHAT=0, SNARE=1, UPPERTOM=2, MIDTOM=3;
 let FLOORTOM=4, KICK=5, CRASH=6, RIDE=7;
@@ -278,6 +280,7 @@ class DrumApp extends BaseApp {
             this.drumMesh.position.set(0, 0, 0);
             this.drumMesh.scale.set(10, 10, 10);
             this.scenes[this.currentScene].add(this.drumMesh);
+            $('#waiting').hide();
         });
 
         //Hit visualisations
@@ -582,6 +585,10 @@ $(document).ready(() => {
         return;
     }
 
+    if(window.innerWidth < MOBILE_WIDTH) {
+        $('#mainModal').modal();
+    }
+
     //Drums
     const defaultBPM = 60;
     let drumNames = ["hihat", "snare", "uppertom", "midtom",
@@ -614,6 +621,10 @@ $(document).ready(() => {
 
     $('#track').on("change", function() {
         app.changeScore(this.value);
+    });
+
+    $('#instructions').on("click", () => {
+        $('#myModal').modal();
     });
 
     app.run();
