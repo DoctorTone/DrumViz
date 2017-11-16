@@ -576,6 +576,12 @@ class DrumApp extends BaseApp {
 }
 
 $(document).ready(() => {
+    //Check for webgl support
+    if(!Detector.webgl) {
+        $('#notSupported').show();
+        return;
+    }
+
     //Drums
     const defaultBPM = 60;
     let drumNames = ["hihat", "snare", "uppertom", "midtom",
@@ -587,7 +593,6 @@ $(document).ready(() => {
 
     let app = new DrumApp();
     app.init(container);
-    //app.createGUI();
     app.createScene();
 
     $('#play').on('click', () => {
