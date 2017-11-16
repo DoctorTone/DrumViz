@@ -234,7 +234,7 @@ class DrumApp extends BaseApp {
         let floorConfig = {
             FLOOR_RADIUS : 60,
             FLOOR_HEIGHT : 5,
-            FLOOR_SEGMENTS : 6,
+            FLOOR_SEGMENTS : 32,
             FLOOR_X : 0,
             FLOOR_Y : -2.5,
             FLOOR_Z : -10,
