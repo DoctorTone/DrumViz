@@ -22,6 +22,11 @@ body {
 .backgroundSubtle {
     background-color: #5c5f64;
 }
+.no-gutters > [class^="col-"],
+.no-gutters > [class*="col-"]{
+    padding: 0;
+    margin: 0;
+}
 #notSupported {
     background: #a9434a;
     border-radius: 15px;
@@ -35,10 +40,10 @@ body {
 }
 #timeLineContainer,
 #scoreContainer {
-    top: 7%;
-    left: 20%;
-    width: 60%;
-    height: 17%;
+    top: 5%;
+    left: 10%;
+    width: 80%;
+    height: 10%;
     border: 6px solid #3e3e3e;
     border-radius: 15px;
 }
@@ -48,11 +53,15 @@ body {
 }
 #dialContainer p {
     font-weight: 600;
+    font-size: 2.25vw;
+    margin: 0;
 }
-.title {
-    text-align: center;
-    font-size: 2vw;
-    color: #ffd54c;
+.form-group label {
+    font-size: 3vw;
+}
+.form-control {
+    height: 30px;
+    font-size: 3vw;
 }
 .contents {
     margin: 0 10%;
@@ -69,15 +78,15 @@ body {
     top:0%;
     left: 30%;
     width: 40%;
-}
-#titleContainer p {
-    font-size: 2vw;
     color: #ffd54c;
 }
+#titleContainer p {
+    font-size: 5vw;
+}
 #controls {
-    top: 1%;
+    top: 15%;
     right: 1%;
-    width: 12.5%;
+    width: 20%;
 }
 #playback img {
     width: 100%;
@@ -87,16 +96,19 @@ body {
     left: 1%;
 }
 #instructions img {
-    width: 50%;
+    width: 40%;
 }
 #copyright {
-    left: 15%;
+    left: 20%;
     bottom: 1%;
     color: white;
     -webkit-touch-callout: none;
 }
+#copyright p {
+    font-size: 4vw;
+}
 #zoomControls {
-    top: 5%;
+    top: 17.5%;
     left: 1.5%;
     width: 20%;
     -webkit-touch-callout: none;
@@ -113,7 +125,7 @@ body {
     width: 90%;
 }
 #rotateControls {
-    top: 30%;
+    top: 27.5%;
     left: 1.5%;
     width: 20%;
     -webkit-touch-callout: none;
@@ -144,9 +156,6 @@ body {
 }
 #waiting img {
     width: 15%;
-}
-#copyright p {
-    font-size: 3vw;
 }
 #notSupported {
     top: 20%;
