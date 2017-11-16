@@ -242,6 +242,8 @@ class DrumApp extends BaseApp {
         //Create scene
         super.createScene();
 
+        this.fitToScreen();
+
         //Create root node
         let root = new THREE.Object3D();
         root.name = "root";
@@ -615,6 +617,15 @@ class DrumApp extends BaseApp {
         //Handle window resize
         super.windowResize(event);
         this.canvasResize();
+    }
+
+    fitToScreen() {
+        //If in portrait mode then move camera
+        if(window.innerHeight > window.innerWidth) {
+            this.setCamera(PORTRAIT);
+        } else {
+            this.setCamera(LANDSCAPE);
+        }
     }
 
     rotateCamera(status, direction) {
