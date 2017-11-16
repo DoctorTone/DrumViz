@@ -3,6 +3,9 @@
  */
 
 const MOBILE_WIDTH = 768;
+const ZOOM_SPEED = 0.1;
+const RIGHT = 0;
+const LEFT = 1;
 
 //Extend app from base
 let HIHAT=0, SNARE=1, UPPERTOM=2, MIDTOM=3;
@@ -200,6 +203,16 @@ const X_AXIS = 0, Y_AXIS = 1, Z_AXIS = 2;
 class DrumApp extends BaseApp {
     constructor() {
         super();
+
+        this.cameraRotate = false;
+        this.rotSpeed = Math.PI/20;
+        this.rotDirection = 1;
+        this.zoomingIn = false;
+        this.zoomingOut = false;
+        this.zoomSpeed = ZOOM_SPEED;
+
+        //Temp variables
+        this.tempVec = new THREE.Vector3();
     }
 
     init(container) {
@@ -229,6 +242,12 @@ class DrumApp extends BaseApp {
         //Create scene
         super.createScene();
 
+        //Create root node
+        let root = new THREE.Object3D();
+        root.name = "root";
+        this.addToScene(root);
+        this.root = root;
+
         //Textures
         let textureLoader = new THREE.TextureLoader();
 
@@ -251,7 +270,7 @@ class DrumApp extends BaseApp {
             let floorMat = new THREE.MeshLambertMaterial( {map: floorTex} );
             let floor = new THREE.Mesh(floorGeom, floorMat);
             floor.position.set(floorConfig.FLOOR_X, floorConfig.FLOOR_Y, floorConfig.FLOOR_Z);
-            this.scenes[this.currentScene].add(floor);
+            this.root.add(floor);
         });
         //Drums
         let drumNames = ["hihat", "snare", "uppertom", "midtom",
@@ -279,7 +298,7 @@ class DrumApp extends BaseApp {
             this.drumMesh = new THREE.Mesh(geometry, new THREE.MultiMaterial(materials));
             this.drumMesh.position.set(0, 0, 0);
             this.drumMesh.scale.set(10, 10, 10);
-            this.scenes[this.currentScene].add(this.drumMesh);
+            this.root.add(this.drumMesh);
             $('#waiting').hide();
         });
 
@@ -301,7 +320,7 @@ class DrumApp extends BaseApp {
             hitMesh.visible = false;
             hitMesh.hitStart = -1;
             hitMesh.hitTime = hitMeshConfig.hitTime;
-            this.scenes[this.currentScene].add(hitMesh);
+            this.root.add(hitMesh);
             this.hitMeshes.push(hitMesh);
             this.hitMeshes.timerStart = 0;
         }
@@ -310,7 +329,7 @@ class DrumApp extends BaseApp {
         let boxGeom = new THREE.BoxBufferGeometry(1, 1, 1);
         let boxMat = new THREE.MeshBasicMaterial( {color: 0xffffff});
         let box = new THREE.Mesh(boxGeom, boxMat);
-        this.scenes[this.currentScene].add(box);
+        this.root.add(box);
         box.name = "Box";
         box.visible = false;
 
@@ -486,7 +505,6 @@ class DrumApp extends BaseApp {
     }
 
     update() {
-        super.update();
         let delta = this.clock.getDelta();
         this.elapsedTime += delta;
 
@@ -529,6 +547,28 @@ class DrumApp extends BaseApp {
                 }
             }
         }
+
+        if(this.cameraRotate) {
+            this.root.rotation.y += (this.rotSpeed * this.rotDirection * delta);
+        }
+
+        if(this.zoomingIn) {
+            this.tempVec.sub(this.camera.position, this.controls.getLookAt());
+            this.tempVec.multiplyScalar(this.zoomSpeed * delta);
+            this.root.position.add(this.tempVec);
+            //DEBUG
+            console.log("Root = ", this.root.position);
+        }
+
+        if(this.zoomingOut) {
+            this.tempVec.sub(this.camera.position, this.controls.getLookAt());
+            this.tempVec.multiplyScalar(this.zoomSpeed * delta);
+            this.root.position.sub(this.tempVec);
+            //DEBUG
+            console.log("Root = ", this.root.position);
+        }
+
+        super.update();
     }
 
     changeScore(option) {
@@ -576,6 +616,19 @@ class DrumApp extends BaseApp {
         super.windowResize(event);
         this.canvasResize();
     }
+
+    rotateCamera(status, direction) {
+        this.rotDirection = direction === RIGHT ? 1 : -1;
+        this.cameraRotate = status;
+    }
+
+    zoomIn(zoom) {
+        this.zoomingIn = zoom;
+    }
+
+    zoomOut(zoom) {
+        this.zoomingOut = zoom;
+    }
 }
 
 $(document).ready(() => {
@@ -601,6 +654,76 @@ $(document).ready(() => {
     let app = new DrumApp();
     app.init(container);
     app.createScene();
+
+    //GUI callbacks
+    let camRight = $('#camRight');
+    let camLeft = $('#camLeft');
+    let zoomIn = $('#zoomIn');
+    let zoomOut = $('#zoomOut');
+
+    camRight.on("mousedown", function() {
+        app.rotateCamera(true, RIGHT);
+    });
+
+    camRight.on("mouseup", function() {
+        app.rotateCamera(false);
+    });
+
+    camRight.on("touchstart", function() {
+        app.rotateCamera(true, RIGHT);
+    });
+
+    camRight.on("touchend", function() {
+        app.rotateCamera(false);
+    });
+
+    camLeft.on("mousedown", function() {
+        app.rotateCamera(true, LEFT);
+    });
+
+    camLeft.on("mouseup", function() {
+        app.rotateCamera(false);
+    });
+
+    camLeft.on("touchstart", function() {
+        app.rotateCamera(true, LEFT);
+    });
+
+    camLeft.on("touchend", function() {
+        app.rotateCamera(false);
+    });
+
+    zoomIn.on("mousedown", () => {
+        app.zoomIn(true);
+    });
+
+    zoomIn.on("mouseup", () => {
+        app.zoomIn(false);
+    });
+
+    zoomIn.on("touchstart", () => {
+        app.zoomIn(true);
+    });
+
+    zoomIn.on("touchend", () => {
+        app.zoomIn(false);
+    });
+
+    zoomOut.on("mousedown", () => {
+        app.zoomOut(true);
+    });
+
+    zoomOut.on("mouseup", () => {
+        app.zoomOut(false);
+    });
+
+    zoomOut.on("touchstart", () => {
+        app.zoomOut(true);
+    });
+
+    zoomOut.on("touchend", () => {
+        app.zoomOut(false);
+    });
 
     $('#play').on('click', () => {
         app.playScore();
