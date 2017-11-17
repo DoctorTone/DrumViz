@@ -296,6 +296,11 @@ body {
         height: 30px;
     }
 }
+@media (min-width: 768px) and (orientation: portrait) {
+    #titleContainer {
+        top: -0.5%;
+    }
+}
 @media (min-width: 1200px) {
     #titleContainer p {
         font-size: 3vw;
