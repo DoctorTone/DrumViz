@@ -255,7 +255,7 @@ body {
         top: 35%;
     }
     #drumStatus {
-        top: 50%;
+        top: 65%;
     }
     #controls {
         width: 20%;
@@ -269,6 +269,31 @@ body {
     }
     #instructions {
         width: 25%;
+    }
+}
+@media (min-width: 768px) {
+    #titleContainer {
+        top: -2%;
+    }
+    #zoomControls p,
+    #rotateControls p {
+        font-size: 2.75vw;
+    }
+    #instructions {
+        width: 17.5%;
+    }
+    #copyright {
+        left: 15%;
+    }
+    #copyright p {
+        font-size: 2vw;
+    }
+    .form-group label {
+        font-size: 1.5vw;
+    }
+    .form-control {
+        font-size: 1.25vw;
+        height: 30px;
     }
 }
 @media (min-width: 1200px) {
