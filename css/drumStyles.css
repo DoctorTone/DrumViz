@@ -157,6 +157,19 @@ body {
 #waiting img {
     width: 15%;
 }
+#drumStatus {
+    top: 40%;
+    width: 60%;
+    left: 20%;
+    background-color: #c7c7c7;
+    color: black;
+    border-radius: 15px;
+    padding: 2%;
+    border: 2px solid black;
+}
+#drumStatus p {
+    font-size: 5vw;
+}
 #notSupported {
     top: 20%;
     left: 12.5%;

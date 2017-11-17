@@ -10,7 +10,6 @@
     <title>Drum Viz</title>
 
     <link rel="stylesheet" href="css/bootstrap.css">
-    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
     <link href="css/drumStyles.css?v=0.3" rel="stylesheet" type="text/css">
 
     <script type="text/javascript" src="js/three86.min.js"></script>
@@ -19,10 +18,9 @@
     <script type="text/javascript" src="js/jquery.knob.min.js"></script>
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
     <script type="text/javascript" src="js/detector.js"></script>
-    <script type="text/javascript" src="js/stats.js"></script>
     <script type="text/javascript" src="js/baseApp.js?v=0.4"></script>
     <script type="text/javascript" src="js/audioManager.js"></script>
-    <script type="text/javascript" src="js/drums.js?v=0.2"></script>
+    <script type="text/javascript" src="js/drums.js?v=0.3"></script>
 
 </head>
 <body>
@@ -35,8 +33,7 @@
                 <h4 class="modal-title" id="mainModalLabel">Drumming Visualisation</h4>
             </div>
             <div class="modal-body">
-                Visualisations look best when viewed on a larger display, please consider this when using the app.<br>
-                Hope you enjoy!
+                Due to the complex audio nature of the application, it may not function correctly on mobile devices.
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
@@ -123,6 +120,12 @@
         <button id="camLeft" type="button" class="btn btn-primary"><img src="images/leftWhite.png"></button>
         <button id="camRight" type="button" class="btn btn-primary"><img src="images/rightWhite.png"></button>
     </div>
+</div>
+
+<div id="drumStatus" class="infoPanel centred noDisplay">
+    <p>
+        Drum model not loaded.
+    </p>
 </div>
 
 <div id="waiting" class="infoPanel centred">

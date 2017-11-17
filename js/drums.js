@@ -265,6 +265,14 @@ class DrumApp extends BaseApp {
             REPEAT_Y : 3
         };
 
+        //Don't load models on small devices
+        let loadModel = true;
+        if(window.innerWidth < MOBILE_WIDTH) {
+            loadModel = false;
+            $('#waiting').hide();
+            $('#drumStatus').show();
+        }
+
         textureLoader.load("textures/oldWoodenFloor.jpg", floorTex => {
             floorTex.wrapS = floorTex.wrapT = THREE.RepeatWrapping;
             floorTex.repeat.set(1, floorConfig.REPEAT_Y);
@@ -296,6 +304,7 @@ class DrumApp extends BaseApp {
 
         //Load in model
         this.loader = new THREE.JSONLoader();
+        /*
         this.loader.load("./models/drumset.json", (geometry, materials) => {
             this.drumMesh = new THREE.Mesh(geometry, new THREE.MultiMaterial(materials));
             this.drumMesh.position.set(0, 0, 0);
@@ -303,6 +312,7 @@ class DrumApp extends BaseApp {
             this.root.add(this.drumMesh);
             $('#waiting').hide();
         });
+        */
 
         //Hit visualisations
         let hitMeshConfig = {
