@@ -302,6 +302,9 @@ body {
     }
 }
 @media (min-width: 1200px) {
+    #titleContainer {
+        top: 0;
+    }
     #titleContainer p {
         font-size: 3vw;
     }
@@ -330,5 +333,42 @@ body {
     }
     #drumStatus p {
         font-size: 3vw;
+    }
+}
+@media (min-width: 1680px) {
+    #titleContainer p {
+        font-size: 2.5vw;
+    }
+    #timeLineContainer,
+    #scoreContainer {
+        height: 20%;
+    }
+    #zoomControls,
+    #rotateControls {
+        width: 7.5%;
+    }
+    #zoomControls p,
+    #rotateControls p {
+        font-size: 1.5vw;
+    }
+    #controls {
+        width: 10%;
+        top: 20%;
+    }
+    .form-group label {
+        font-size: 1.25vw;
+    }
+    .form-control {
+        font-size: 1vw;
+        height: 35px;
+    }
+    #instructions {
+        width: 12.5%;
+    }
+    #copyright {
+        left: 10%;
+    }
+    #copyright p {
+        font-size: 1.5vw;
     }
 }
