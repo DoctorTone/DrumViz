@@ -183,3 +183,47 @@ body {
 #notSupported p img {
     width: 15%;
 }
+/* Media queries */
+@media (min-width: 568px) {
+    #titleContainer p {
+        font-size: 4.5vw;
+    }
+    #timeLineContainer,
+    #scoreContainer {
+        top: 10%;
+        height: 20%;
+    }
+    #controls {
+        width: 15%;
+        top: 30%;
+    }
+    #dialContainer p {
+        font-size: 1.5vw;
+    }
+    .form-group label {
+        font-size: 2vw;
+    }
+    .form-control {
+        font-size: 2vw;
+    }
+    #zoomControls,
+    #rotateControls {
+        width: 12.5%;
+    }
+    #zoomControls p,
+    #rotateControls p {
+        font-size: 3vw;
+    }
+    #zoomControls {
+        top: 30%;
+    }
+    #rotateControls {
+        top: 50%;
+    }
+    #copyright p {
+        font-size: 3vw;
+    }
+    #drumStatus p {
+        font-size: 4vw;
+    }
+}

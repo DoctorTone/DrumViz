@@ -267,7 +267,7 @@ class DrumApp extends BaseApp {
 
         //Don't load models on small devices
         let loadModel = true;
-        if(window.innerWidth < MOBILE_WIDTH) {
+        if(window.innerWidth < MOBILE_WIDTH || window.innerHeight < MOBILE_WIDTH) {
             loadModel = false;
             $('#waiting').hide();
             $('#drumStatus').show();
