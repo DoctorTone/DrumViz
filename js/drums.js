@@ -273,15 +273,18 @@ class DrumApp extends BaseApp {
             $('#drumStatus').show();
         }
 
-        textureLoader.load("textures/oldWoodenFloor.jpg", floorTex => {
-            floorTex.wrapS = floorTex.wrapT = THREE.RepeatWrapping;
-            floorTex.repeat.set(1, floorConfig.REPEAT_Y);
-            let floorGeom = new THREE.CylinderBufferGeometry(floorConfig.FLOOR_RADIUS, floorConfig.FLOOR_RADIUS, floorConfig.FLOOR_HEIGHT, floorConfig.FLOOR_SEGMENTS);
-            let floorMat = new THREE.MeshLambertMaterial( {map: floorTex} );
-            let floor = new THREE.Mesh(floorGeom, floorMat);
-            floor.position.set(floorConfig.FLOOR_X, floorConfig.FLOOR_Y, floorConfig.FLOOR_Z);
-            this.root.add(floor);
-        });
+        if(loadModel) {
+            textureLoader.load("./textures/oldWoodenFloor.jpg", floorTex => {
+                floorTex.wrapS = floorTex.wrapT = THREE.RepeatWrapping;
+                floorTex.repeat.set(1, floorConfig.REPEAT_Y);
+                let floorGeom = new THREE.CylinderBufferGeometry(floorConfig.FLOOR_RADIUS, floorConfig.FLOOR_RADIUS, floorConfig.FLOOR_HEIGHT, floorConfig.FLOOR_SEGMENTS);
+                let floorMat = new THREE.MeshLambertMaterial( {map: floorTex} );
+                let floor = new THREE.Mesh(floorGeom, floorMat);
+                floor.position.set(floorConfig.FLOOR_X, floorConfig.FLOOR_Y, floorConfig.FLOOR_Z);
+                this.root.add(floor);
+            });
+        }
+
         //Drums
         let drumNames = ["hihat", "snare", "uppertom", "midtom",
             "floortom", "kick", "crash", "ride"];
@@ -304,15 +307,15 @@ class DrumApp extends BaseApp {
 
         //Load in model
         this.loader = new THREE.JSONLoader();
-        /*
-        this.loader.load("./models/drumset.json", (geometry, materials) => {
-            this.drumMesh = new THREE.Mesh(geometry, new THREE.MultiMaterial(materials));
-            this.drumMesh.position.set(0, 0, 0);
-            this.drumMesh.scale.set(10, 10, 10);
-            this.root.add(this.drumMesh);
-            $('#waiting').hide();
-        });
-        */
+        if(loadModel) {
+            this.loader.load("./models/drumset.json", (geometry, materials) => {
+                this.drumMesh = new THREE.Mesh(geometry, new THREE.MultiMaterial(materials));
+                this.drumMesh.position.set(0, 0, 0);
+                this.drumMesh.scale.set(10, 10, 10);
+                this.root.add(this.drumMesh);
+                $('#waiting').hide();
+            });
+        }
 
         //Hit visualisations
         let hitMeshConfig = {
