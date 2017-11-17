@@ -231,3 +231,43 @@ body {
         font-size: 4vw;
     }
 }
+@media (min-width: 568px) and (orientation: portrait) {
+    #titleContainer p {
+        font-size: 5vw;
+    }
+    #timeLineContainer,
+    #scoreContainer {
+        top: 5%;
+        height: 12.5%;
+    }
+    #zoomControls,
+    #rotateControls {
+        width: 20%;
+    }
+    #zoomControls p,
+    #rotateControls p {
+        font-size: 5vw;
+    }
+    #zoomControls {
+        top: 20%;
+    }
+    #rotateControls {
+        top: 35%;
+    }
+    #drumStatus {
+        top: 50%;
+    }
+    #controls {
+        width: 20%;
+        top: 20%;
+    }
+    #dialContainer p {
+        font-size: 2.25vw;
+    }
+    .form-group label {
+        font-size: 2.5vw;
+    }
+    #instructions {
+        width: 25%;
+    }
+}
