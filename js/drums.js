@@ -2,7 +2,7 @@
  * Created by DrTone on 01/06/2015.
  */
 
-const MOBILE_WIDTH = 768;
+const MOBILE_WIDTH = 680;
 const ZOOM_SPEED = 0.1;
 const RIGHT = 0;
 const LEFT = 1;
