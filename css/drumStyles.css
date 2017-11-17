@@ -46,6 +46,7 @@ body {
     height: 10%;
     border: 6px solid #3e3e3e;
     border-radius: 15px;
+    -webkit-touch-callout: none;
 }
 #scoreContainer img {
     width: 100%;
@@ -79,6 +80,7 @@ body {
     left: 30%;
     width: 40%;
     color: #ffd54c;
+    -webkit-touch-callout: none;
 }
 #titleContainer p {
     font-size: 5vw;
@@ -87,6 +89,7 @@ body {
     top: 15%;
     right: 1%;
     width: 20%;
+    -webkit-touch-callout: none;
 }
 #playback img {
     width: 100%;
@@ -94,6 +97,7 @@ body {
 #instructions {
     bottom: 1%;
     left: 1%;
+    -webkit-touch-callout: none;
 }
 #instructions img {
     width: 40%;
@@ -157,19 +161,6 @@ body {
 #waiting img {
     width: 15%;
 }
-#drumStatus {
-    top: 40%;
-    width: 60%;
-    left: 20%;
-    background-color: #c7c7c7;
-    color: black;
-    border-radius: 15px;
-    padding: 2%;
-    border: 2px solid black;
-}
-#drumStatus p {
-    font-size: 5vw;
-}
 #notSupported {
     top: 20%;
     left: 12.5%;
@@ -227,8 +218,8 @@ body {
     #copyright p {
         font-size: 3vw;
     }
-    #drumStatus p {
-        font-size: 4vw;
+    #waiting img {
+        width: 10%;
     }
 }
 @media (min-width: 568px) and (orientation: portrait) {
@@ -270,6 +261,13 @@ body {
     #instructions {
         width: 25%;
     }
+    #waiting {
+        width: 75%;
+        left: 12.5%;
+    }
+    #waiting p {
+        font-size: 3.5vw;
+    }
 }
 @media (min-width: 768px) {
     #titleContainer {
@@ -294,6 +292,9 @@ body {
     .form-control {
         font-size: 1.25vw;
         height: 30px;
+    }
+    #waiting img {
+        width: 7.5%;
     }
 }
 @media (min-width: 768px) and (orientation: portrait) {
@@ -331,8 +332,15 @@ body {
         width: 60%;
         left: 20%;
     }
-    #drumStatus p {
-        font-size: 3vw;
+    #waiting {
+        width: 50%;
+        left: 25%;
+    }
+    #waiting p {
+        font-size: 2vw;
+    }
+    #waiting img {
+        width: 5%;
     }
 }
 @media (min-width: 1680px) {

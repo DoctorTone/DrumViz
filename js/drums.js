@@ -667,6 +667,14 @@ class DrumApp extends BaseApp {
     zoomOut(zoom) {
         this.zoomingOut = zoom;
     }
+
+    stopNotifications(elemList) {
+        for(let i=0, numElems=elemList.length; i<numElems; ++i) {
+            $('#' + elemList[i]).contextmenu(() => {
+                return false;
+            });
+        }
+    }
 }
 
 $(document).ready(() => {
@@ -783,6 +791,10 @@ $(document).ready(() => {
     $('#track').on("change", function() {
         app.changeScore(this.value);
     });
+
+    let elemList = ["scoreContainer", "timeLineContainer", "titleContainer", "controls", "zoomControls", "rotateControls", "instructions",
+        "copyright"];
+    app.stopNotifications(elemList);
 
     $('#instructions').on("click", () => {
         $('#myModal').modal();
