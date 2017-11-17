@@ -266,23 +266,28 @@ class DrumApp extends BaseApp {
         };
 
         //Don't load models on small devices
-        let loadModel = true;
+        let loadFullModel = true;
         if(window.innerWidth < MOBILE_WIDTH || window.innerHeight < MOBILE_WIDTH) {
-            loadModel = false;
-            $('#waiting').hide();
-            $('#drumStatus').show();
+            loadFullModel = false;
         }
 
-        if(loadModel) {
+        let floorMat = new THREE.MeshLambertMaterial( {color: 0x3E2D19} );
+        let floorGeom = new THREE.CylinderBufferGeometry(floorConfig.FLOOR_RADIUS, floorConfig.FLOOR_RADIUS, floorConfig.FLOOR_HEIGHT, floorConfig.FLOOR_SEGMENTS);
+        let floor;
+
+        if(loadFullModel) {
             textureLoader.load("./textures/oldWoodenFloor.jpg", floorTex => {
                 floorTex.wrapS = floorTex.wrapT = THREE.RepeatWrapping;
                 floorTex.repeat.set(1, floorConfig.REPEAT_Y);
-                let floorGeom = new THREE.CylinderBufferGeometry(floorConfig.FLOOR_RADIUS, floorConfig.FLOOR_RADIUS, floorConfig.FLOOR_HEIGHT, floorConfig.FLOOR_SEGMENTS);
-                let floorMat = new THREE.MeshLambertMaterial( {map: floorTex} );
-                let floor = new THREE.Mesh(floorGeom, floorMat);
+                floorMat = new THREE.MeshLambertMaterial( {map: floorTex} );
+                floor = new THREE.Mesh(floorGeom, floorMat);
                 floor.position.set(floorConfig.FLOOR_X, floorConfig.FLOOR_Y, floorConfig.FLOOR_Z);
                 this.root.add(floor);
             });
+        } else {
+            floor = new THREE.Mesh(floorGeom, floorMat);
+            floor.position.set(floorConfig.FLOOR_X, floorConfig.FLOOR_Y, floorConfig.FLOOR_Z);
+            this.root.add(floor);
         }
 
         //Drums
@@ -307,8 +312,17 @@ class DrumApp extends BaseApp {
 
         //Load in model
         this.loader = new THREE.JSONLoader();
-        if(loadModel) {
+        if(loadFullModel) {
             this.loader.load("./models/drumset.json", (geometry, materials) => {
+                this.drumMesh = new THREE.Mesh(geometry, new THREE.MultiMaterial(materials));
+                this.drumMesh.position.set(0, 0, 0);
+                this.drumMesh.scale.set(10, 10, 10);
+                this.root.add(this.drumMesh);
+                $('#waiting').hide();
+            });
+        } else {
+            //Load simplified version
+            this.loader.load("./models/drumsetSimple.json", (geometry, materials) => {
                 this.drumMesh = new THREE.Mesh(geometry, new THREE.MultiMaterial(materials));
                 this.drumMesh.position.set(0, 0, 0);
                 this.drumMesh.scale.set(10, 10, 10);
