@@ -93,13 +93,11 @@ body {
     width: 100%;
 }
 #copyright {
-    left: 20%;
-    bottom: 1%;
+    left: 15%;
+    bottom: 1.5%;
+    font-size: 3.5vw;
     color: white;
     -webkit-touch-callout: none;
-}
-#copyright p {
-    font-size: 4vw;
 }
 #zoomControls {
     top: 17.5%;
@@ -205,8 +203,9 @@ body {
     #rotateControls {
         top: 50%;
     }
-    #copyright p {
-        font-size: 3vw;
+    #copyright {
+        font-size: 2.25vw;
+        left: 11%;
     }
     #waiting img {
         width: 7.5%;
@@ -275,6 +274,10 @@ body {
     #notSupported p img {
         width: 25%;
     }
+    #copyright {
+        font-size: 2.75vw;
+        left: 12.5%;
+    }
 }
 @media (min-width: 768px) {
     #titleContainer {
@@ -285,10 +288,8 @@ body {
         font-size: 2.75vw;
     }
     #copyright {
-        left: 15%;
-    }
-    #copyright p {
         font-size: 2vw;
+        left: 10%;
     }
     .form-group label {
         font-size: 1.5vw;
@@ -311,6 +312,10 @@ body {
     }
     #notSupported p img {
         width: 30%;
+    }
+    #copyright {
+        font-size: 2.5vw;
+        left: 12%;
     }
 }
 @media (min-width: 1200px) {
@@ -363,6 +368,10 @@ body {
     #instructions {
         width: 5%;
     }
+    #copyright {
+        left: 7.5%;
+        font-size: 1.5vw;
+    }
 }
 @media (min-width: 1680px) {
     #titleContainer p {
@@ -395,10 +404,7 @@ body {
         width: 12.5%;
     }
     #copyright {
-        left: 10%;
-    }
-    #copyright p {
-        font-size: 1.5vw;
+        font-size: 1.25vw;
     }
     #notSupported {
         top: 30%;
