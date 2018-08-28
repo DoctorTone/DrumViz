@@ -39,9 +39,12 @@ body {
 #startText {
     color: white;
     font-size: 3rem;
-    top: 45%;
-    left: 35%;
-    width: 30%;
+    top: 30%;
+    left: 0%;
+    width: 100%;
+}
+#startText img {
+    width: 25%;
 }
 #WebGL-output {
     position: relative;
