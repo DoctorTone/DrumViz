@@ -20,7 +20,7 @@
     <script type="text/javascript" src="js/detector.js"></script>
     <script type="text/javascript" src="js/baseApp.js?v=0.6"></script>
     <script type="text/javascript" src="js/audioManager.js"></script>
-    <script type="text/javascript" src="js/drums.js?v=0.8"></script>
+    <script type="text/javascript" src="js/drums.js?v=0.9"></script>
 
 </head>
 <body>
@@ -62,80 +62,81 @@
 <!-- Stats output -->
 <div id="Stats-output">
 </div>
+<!-- Start screen while models load -->
+<div id="splashScreen" class="text-center">
+    <div id="startText" class="infoPanel">
+        <p>
+            Please wait while scene loads...
+        </p>
+    </div>
+</div>
 <!-- Div which will hold the Output -->
-<div id="WebGL-output">
-</div>
+<div id="WebGL-output" class="noDisplay">
+    <div id="scoreContainer" class="infoPanel">
 
-<div id="scoreContainer" class="infoPanel">
+    </div>
 
-</div>
+    <div id="timeLineContainer" class="infoPanel">
 
-<div id="timeLineContainer" class="infoPanel">
+    </div>
 
-</div>
+    <div id="titleContainer" class="infoPanel centred">
+        <p>Simple Groove <span id="scoreNum">1</span></p>
+    </div>
 
-<div id="titleContainer" class="infoPanel centred">
-    <p>Simple Groove <span id="scoreNum">1</span></p>
-</div>
-
-<div id="controls" class="infoPanel">
-    <div id="dialContainer" class="centred">
-        <p>Beats Per Minute</p>
-        <input class="dial" value="60"  data-width="90%" data-fgColor="#632523" data-inputColor="#000000" data-min="5" data-max="220">
-        <div id="playback" class="centred">
-            <div class="container-fluid">
-                <div class="row no-gutters">
-                    <div class="col-xxs-6">
-                        <img id="rewind" src="images/rewind-button.png">
-                    </div>
-                    <div class="col-xxs-6">
-                        <img id="play" src="images/play-button.png">
+    <div id="controls" class="infoPanel">
+        <div id="dialContainer" class="centred">
+            <p>Beats Per Minute</p>
+            <input class="dial" value="60"  data-width="90%" data-fgColor="#632523" data-inputColor="#000000" data-min="5" data-max="220">
+            <div id="playback" class="centred">
+                <div class="container-fluid">
+                    <div class="row no-gutters">
+                        <div class="col-xxs-6">
+                            <img id="rewind" src="images/rewind-button.png">
+                        </div>
+                        <div class="col-xxs-6">
+                            <img id="play" src="images/play-button.png">
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <div class="form-group">
+            <label for="track">Track:</label>
+            <select class="form-control" id="track">
+                <option value="1">Groove 1</option>
+                <option value="2">Groove 2</option>
+                <option value="3">Groove 3</option>
+            </select>
+        </div>
     </div>
 
-    <div class="form-group">
-        <label for="track">Track:</label>
-        <select class="form-control" id="track">
-            <option value="1">Groove 1</option>
-            <option value="2">Groove 2</option>
-            <option value="3">Groove 3</option>
-        </select>
+    <div id="zoomControls" class="infoPanel centred">
+        <p>Zoom</p>
+        <div>
+            <button id="zoomOut" type="button" class="btn btn-primary"><img src="images/minus.png"></button>
+            <button id="zoomIn" type="button" class="btn btn-primary"><img src="images/add.png"></button>
+        </div>
     </div>
-</div>
 
-<div id="zoomControls" class="infoPanel centred">
-    <p>Zoom</p>
-    <div>
-        <button id="zoomOut" type="button" class="btn btn-primary"><img src="images/minus.png"></button>
-        <button id="zoomIn" type="button" class="btn btn-primary"><img src="images/add.png"></button>
+    <div id="rotateControls" class="infoPanel centred">
+        <p>Rotate</p>
+        <div>
+            <button id="camLeft" type="button" class="btn btn-primary"><img src="images/leftWhite.png"></button>
+            <button id="camRight" type="button" class="btn btn-primary"><img src="images/rightWhite.png"></button>
+        </div>
     </div>
-</div>
 
-<div id="rotateControls" class="infoPanel centred">
-    <p>Rotate</p>
-    <div>
-        <button id="camLeft" type="button" class="btn btn-primary"><img src="images/leftWhite.png"></button>
-        <button id="camRight" type="button" class="btn btn-primary"><img src="images/rightWhite.png"></button>
+    <div id="instructions" class="infoPanel">
+        <img src="images/info.png">
     </div>
-</div>
 
-<div id="waiting" class="infoPanel centred">
-    <p>
-        <img src="images/wait.png">Please wait while model loads...
-    </p>
-</div>
-
-<div id="instructions" class="infoPanel">
-    <img src="images/info.png">
-</div>
-
-<div id="copyright" class="infoPanel centred">
-    <p>
-        &copy; DRT Software Ltd, 2017
-    </p>
+    <div id="copyright" class="infoPanel centred">
+        <p>
+            &copy; DRT Software Ltd, 2017
+        </p>
+    </div>
 </div>
 
 <div id="notSupported" class="infoPanel centred noDisplay">

@@ -204,6 +204,7 @@ class DrumApp extends BaseApp {
     constructor() {
         super();
 
+        this.appRunning = false;
         this.cameraRotate = false;
         this.rotSpeed = Math.PI/20;
         this.rotDirection = 1;
@@ -213,6 +214,10 @@ class DrumApp extends BaseApp {
 
         //Temp variables
         this.tempVec = new THREE.Vector3();
+    }
+
+    setContainer(container) {
+        this.container = container;
     }
 
     init(container) {
@@ -318,7 +323,10 @@ class DrumApp extends BaseApp {
                 this.drumMesh.position.set(0, 0, 0);
                 this.drumMesh.scale.set(10, 10, 10);
                 this.root.add(this.drumMesh);
-                $('#waiting').hide();
+                $('#splashScreen').hide();
+                $('#WebGL-output').show();
+                this.run();
+                this.windowResize(null);
             });
         } else {
             //Load simplified version
@@ -327,7 +335,10 @@ class DrumApp extends BaseApp {
                 this.drumMesh.position.set(0, 0, 0);
                 this.drumMesh.scale.set(10, 10, 10);
                 this.root.add(this.drumMesh);
-                $('#waiting').hide();
+                $('#splashScreen').hide();
+                $('#WebGL-output').show();
+                this.run();
+                this.windowResize(null);
             });
         }
 
@@ -800,5 +811,5 @@ $(document).ready(() => {
         $('#myModal').modal();
     });
 
-    app.run();
+    //app.run();
 });

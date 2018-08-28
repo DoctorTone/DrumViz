@@ -27,6 +27,22 @@ body {
     padding: 0;
     margin: 0;
 }
+#splashScreen {
+    position: relative;
+    background: black;
+    width: 100%;
+    height: 100vh;
+}
+#startText {
+    color: white;
+    font-size: 3rem;
+    top: 45%;
+    left: 35%;
+    width: 30%;
+}
+#WebGL-output {
+    position: relative;
+}
 #timeLineContainer,
 #scoreContainer {
     top: 5%;
