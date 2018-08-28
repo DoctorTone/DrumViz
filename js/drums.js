@@ -324,9 +324,6 @@ class DrumApp extends BaseApp {
                 this.drumMesh.scale.set(10, 10, 10);
                 this.root.add(this.drumMesh);
                 $('#splashScreen').hide();
-                $('#WebGL-output').show();
-                this.run();
-                this.windowResize(null);
             });
         } else {
             //Load simplified version
@@ -336,9 +333,6 @@ class DrumApp extends BaseApp {
                 this.drumMesh.scale.set(10, 10, 10);
                 this.root.add(this.drumMesh);
                 $('#splashScreen').hide();
-                $('#WebGL-output').show();
-                this.run();
-                this.windowResize(null);
             });
         }
 
@@ -686,6 +680,10 @@ class DrumApp extends BaseApp {
             });
         }
     }
+
+    setupControls() {
+
+    }
 }
 
 $(document).ready(() => {
@@ -718,35 +716,35 @@ $(document).ready(() => {
     let zoomIn = $('#zoomIn');
     let zoomOut = $('#zoomOut');
 
-    camRight.on("mousedown", function() {
+    camRight.on("mousedown", () => {
         app.rotateCamera(true, RIGHT);
     });
 
-    camRight.on("mouseup", function() {
+    camRight.on("mouseup", () => {
         app.rotateCamera(false);
     });
 
-    camRight.on("touchstart", function() {
+    camRight.on("touchstart", () => {
         app.rotateCamera(true, RIGHT);
     });
 
-    camRight.on("touchend", function() {
+    camRight.on("touchend", () => {
         app.rotateCamera(false);
     });
 
-    camLeft.on("mousedown", function() {
+    camLeft.on("mousedown", () => {
         app.rotateCamera(true, LEFT);
     });
 
-    camLeft.on("mouseup", function() {
+    camLeft.on("mouseup", () => {
         app.rotateCamera(false);
     });
 
-    camLeft.on("touchstart", function() {
+    camLeft.on("touchstart", () => {
         app.rotateCamera(true, LEFT);
     });
 
-    camLeft.on("touchend", function() {
+    camLeft.on("touchend", () => {
         app.rotateCamera(false);
     });
 
@@ -811,5 +809,5 @@ $(document).ready(() => {
         $('#myModal').modal();
     });
 
-    //app.run();
+    app.run();
 });
