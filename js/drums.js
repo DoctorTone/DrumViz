@@ -324,7 +324,10 @@ class DrumApp extends BaseApp {
                 this.drumMesh.scale.set(10, 10, 10);
                 this.root.add(this.drumMesh);
                 $('#splashScreen').hide();
-            });
+            },
+                xhr => {
+                    console.log((xhr.loaded / xhr.total * 100) + "% loaded");
+                });
         } else {
             //Load simplified version
             this.loader.load("./models/drumsetSimple.json", (geometry, materials) => {

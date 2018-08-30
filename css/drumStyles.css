@@ -27,6 +27,10 @@ body {
     padding: 0;
     margin: 0;
 }
+.progress {
+    width: 50%;
+    margin: 0 auto;
+}
 #splashScreen {
     z-index: 100;
     position: absolute;
